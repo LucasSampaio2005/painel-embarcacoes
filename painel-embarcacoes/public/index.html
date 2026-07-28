@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu IATE</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style1.css">
+</head>
+
+<body>
+
+    <!-- MENU OVERLAY -->
+    <div id="menu-overlay" class="menu-overlay">
+        <div class="menu-content">
+            <div class="fechar" onclick="fecharMenu()">&#10005;</div>
+            <a href="index.html">INÍCIO</a>
+            <a href="percio.html">PÉRCIO BERALDO</a>
+            <a href="embarcoes.html">EMBARCAÇÕES</a>
+        </div>
+    </div>
+
+    <!-- WHATSAPP FIXO -->
+    <a href="https://wa.me/5548999950413" class="whatsapp" target="_blank">
+        <div class="icone">
+            <img src="img/whatsapp.png" alt="WhatsApp">
+        </div>
+        <span>Como posso te ajudar?</span>
+    </a>
+
+    <!-- BANNER -->
+    <header class="banner">
+
+        <div class="logo-area">
+            <img src="img/logoprinc.png" class="logoprinc" alt="Logo Pércio Beraldo">
+            <h6 class="logo-titulo">NAVEGUE COM QUEM ENTENDE</h6>
+            <p class="logo-texto">
+                Pércio Beraldo, consultor oficial Schaefer Yachts<br>
+                Consultoria especializada, acesso direto ao estaleiro<br>
+                e curadoria completa para compra e venda com segurança.
+            </p>
+        </div>
+
+        <div class="menu">
+            <button class="menu-botao" onclick="abrirMenu()">
+                <span class="menu-texto">MENU</span>
+                <div class="menu-icone">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </div>
+
+        <img src="img/onda.png" class="onda" alt="">
+    </header>
+
+    <!-- EMBARCAÇÕES -->
+    <section class="embarcacoes">
+
+        <h2 class="titulo-embarcacoes">CONHEÇA NOSSAS EMBARCAÇÕES</h2>
+        <div class="linha-embarcacoes"></div>
+
+        <div class="carrossel">
+            <button class="seta esquerda">&#10094;</button>
+
+            <div class="carrossel-container">
+                <div class="cards" id="cards-novos">
+                    <!-- Gerado via JS a partir da API /api/boats (barcos com condicao "novo") -->
+                </div>
+            </div>
+
+            <button class="seta direita">&#10095;</button>
+        </div>
+
+        <div class="area-botao">
+            <a href="embarcoes.html" class="botao-catalogo">
+                CATÁLOGO <span class="seta-botao"></span>
+            </a>
+        </div>
+
+    </section>
+
+    <!-- PERCIO -->
+    <section class="percio">
+        <div class="percio-container">
+
+            <div class="percio-img">
+                <img src="img/percio.jpg" alt="Pércio Beraldo">
+            </div>
+
+            <div class="percio-texto">
+                <h2>
+                    ESPECIALISTA EM SCHAEFER YACHTS COM <span class="destaque">ATUAÇÃO DIRETA</span> NO ESTALEIRO EM
+                    FLORIANÓPOLIS.
+                </h2>
+
+                <p>
+                    Atendimento completo desde a escolha até a entrega.
+                </p>
+
+                <div class="botao-centro">
+                    <a href="percio.html" class="botao-percio">
+                        FALE COMIGO
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- EMBARCAÇÕES ENTREGUES -->
+    <section class="entregues">
+        <h2 class="titulo-entregues">EMBARCAÇÕES ENTREGUES</h2>
+        <div class="linha-embarcacoes"></div>
+
+        <div class="carrossel carrossel-entregues">
+            <button class="seta esquerda-e">&#10094;</button>
+
+            <div class="carrossel-container">
+                <div class="cards cards-entregues">
+
+                    <div class="card-entregue">
+                        <img src="img/entregue1.jpg" alt="Entrega de embarcação">
+                    </div>
+
+                    <div class="card-entregue">
+                        <img src="img/entregue4.jpg" alt="Entrega de embarcação">
+                    </div>
+
+                </div>
+            </div>
+
+            <button class="seta direita-e">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <img src="img/logo.png" class="logo-rodape">
+
+        <div class="footer-contato">
+            <span class="footer-titulo">Contato</span>
+            <span>(48) 999950413</span>
+            <span>✉ percio.beraldo@schaeferyachts.com.br</span>
+        </div>
+
+        <div class="footer-separador"></div>
+
+        <div class="footer-icones">
+            <a href="https://www.instagram.com/percio.schaeferyachts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                target="_blank" rel="noopener" class="footer-icone-link">
+                <img src="img/insta.png" alt="Instagram">
+            </a>
+            <a href="#" class="footer-icone-link">
+                <img src="img/whats.png" alt="WhatsApp">
+            </a>
+        </div>
+    </footer>
+
+    <script src="menu.js"></script>
+    <script>
+        /* ── CARREGAMENTO DOS BARCOS "NOVOS" (via API) ── */
+        async function carregarBarcosNovos() {
+            const container = document.getElementById('cards-novos');
+            try {
+                const resposta = await fetch('/api/boats', { cache: 'no-store' });
+                const boats = await resposta.json();
+                const novos = boats.filter(b => b.condicao === 'novo');
+
+                container.innerHTML = novos.map(b => `
+                    <div class="card">
+                        <img src="${b.foto}" alt="${b.modelo}">
+                        <div class="card-info">
+                            <h3>${b.modelo}</h3>
+                            <p>${b.motorizacao}</p>
+                            <p>${b.ano}</p>
+                            ${b.pdf ? `<a href="${b.pdf}" target="_blank" rel="noopener" class="btn-conheca">CONHEÇA</a>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (erro) {
+                console.error('Não foi possível carregar os barcos:', erro);
+            }
+        }
+        carregarBarcosNovos();
+
+        /* ── CARROSSEL PRINCIPAL ── */
+        const cards = document.querySelector('.cards');
+        const btnEsquerda = document.querySelector('.esquerda');
+        const btnDireita = document.querySelector('.direita');
+        const container = document.querySelector('.carrossel-container');
+        let scrollPosition = 0;
+
+        btnDireita.addEventListener('click', () => {
+            const card = document.querySelector('.card');
+            if (!card) return;
+            const cardWidth = card.offsetWidth + 30;
+            const maxScroll = cards.scrollWidth - container.clientWidth;
+            scrollPosition = Math.min(scrollPosition + cardWidth, maxScroll);
+            cards.style.transform = `translateX(-${scrollPosition}px)`;
+        });
+
+        btnEsquerda.addEventListener('click', () => {
+            const card = document.querySelector('.card');
+            if (!card) return;
+            const cardWidth = card.offsetWidth + 30;
+            scrollPosition = Math.max(scrollPosition - cardWidth, 0);
+            cards.style.transform = `translateX(-${scrollPosition}px)`;
+        });
+
+        /* ── CARROSSEL ENTREGUES ── */
+        const cardsE = document.querySelector('.cards-entregues');
+        const btnEsquerdaE = document.querySelector('.esquerda-e');
+        const btnDireitaE = document.querySelector('.direita-e');
+        const containerE = document.querySelector('.carrossel-entregues .carrossel-container');
+        let scrollPositionE = 0;
+
+        btnDireitaE.addEventListener('click', () => {
+            const cardWidth = document.querySelector('.card-entregue').offsetWidth + 30;
+            const maxScroll = cardsE.scrollWidth - containerE.clientWidth;
+            scrollPositionE = Math.min(scrollPositionE + cardWidth, maxScroll);
+            cardsE.style.transform = `translateX(-${scrollPositionE}px)`;
+        });
+
+        btnEsquerdaE.addEventListener('click', () => {
+            const cardWidth = document.querySelector('.card-entregue').offsetWidth + 30;
+            scrollPositionE = Math.max(scrollPositionE - cardWidth, 0);
+            cardsE.style.transform = `translateX(-${scrollPositionE}px)`;
+        });
+    </script>
+
+</body>
+
+</html>

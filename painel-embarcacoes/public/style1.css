@@ -1,0 +1,579 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* =====================
+   BANNER
+===================== */
+.banner {
+    height: 720px;
+    background-image: url("img/iate.jpg");
+    background-size: cover;
+    background-position: center 30%;
+    position: relative;
+    z-index: 0;
+    padding: 30px;
+}
+
+/* =====================
+   LOGO PRINCIPAL
+===================== */
+.logo-area {
+    position: absolute;
+    top: -10px;
+    left: 30px;
+}
+
+.logoprinc {
+    width: 220px;
+}
+
+.logo-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    color: white;
+    margin-top: -5px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.logo-texto {
+    color: white;
+    margin-top: 14px;
+    font-size: 19px;
+    letter-spacing: 0.5px;
+    width: 70%;
+    line-height: 1.7;
+    font-family: 'Playfair Display', sans-serif;
+    font-weight: 300;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* =====================
+   MENU BOTÃO
+===================== */
+.menu {
+    position: absolute;
+    top: 53px;
+    right: 40px;
+    z-index: 10;
+    background: none;
+    border: none;
+}
+
+.menu-botao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+}
+
+.menu-texto {
+    color: white;
+    font-size: 20px;
+    letter-spacing: 3px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+.menu-icone {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-icone span {
+    width: 26px;
+    height: 2px;
+    background-color: white;
+    display: block;
+    border-radius: 2px;
+}
+
+/* =====================
+   MENU OVERLAY
+===================== */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(5, 25, 45, 0.97), rgba(5, 25, 45, 0.98));
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.menu-content {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.menu-content::before,
+.menu-content::after {
+    content: "";
+    display: block;
+    width: 220px;
+    height: 1px;
+    background: white;
+    margin: 25px auto;
+}
+
+.menu-content a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    margin: 28px 0;
+    letter-spacing: 3px;
+    transition: 0.3s;
+}
+
+.menu-content a:hover {
+    color: #c49a6c;
+    transform: scale(1.05);
+}
+
+.fechar {
+    position: absolute;
+    top: 40px;
+    right: 60px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1;
+}
+
+/* =====================
+   WHATSAPP FIXO
+===================== */
+.whatsapp {
+    position: fixed;
+    bottom: 40px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: white;
+    background: #0b1d2e;
+    padding: 12px 22px;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 1px;
+    font-size: 13px;
+    text-decoration: none;
+    z-index: 100;
+    transition: opacity 0.3s;
+}
+
+body.menu-aberto .whatsapp {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.icone {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #25D366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icone img {
+    width: 22px;
+}
+
+/* =====================
+   ONDA — transição banner → embarcações
+===================== */
+.onda {
+    position: absolute;
+    top: 290px;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    pointer-events: none;
+    display: block;
+}
+
+/* =====================
+   ONDA CINZA — transição percio → entregues
+===================== */
+.onda-entregues-wrapper {
+    position: relative;
+    background: #f5f4f5;
+    margin-bottom: -2px;
+    line-height: 0;
+}
+
+.onda-entregues-wrapper img {
+    width: 100%;
+    display: block;
+}
+
+/* =====================
+   SEÇÃO EMBARCAÇÕES
+===================== */
+section {
+    margin: 0;
+}
+
+.embarcacoes {
+    background: #f5f4f5;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.titulo-embarcacoes {
+    margin-top: 20px;
+    position: relative;
+    z-index: 2;
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    letter-spacing: 4px;
+    color: #2c3e50;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.18);
+    margin-bottom: 12px;
+}
+
+.linha-embarcacoes {
+    width: 500px;
+    height: 2px;
+    background: #8b502e;
+    margin: 0 auto 40px auto;
+}
+
+/* =====================
+   CARROSSEL
+===================== */
+.carrossel {
+    position: relative;
+    margin-top: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carrossel-container {
+    width: 900px;
+    overflow: hidden;
+}
+
+.cards {
+    display: flex;
+    gap: 30px;
+    transition: transform 0.5s ease;
+}
+
+.card {
+    min-width: 420px;
+    background: #e2e0e0;
+    border: 2px solid #8b502e;
+    border-radius: 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+.card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.card-info {
+    padding: 22px;
+}
+
+.card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: #0b1d2e;
+    margin-bottom: 8px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.card p {
+    font-size: 15px;
+    color: #666;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
+    margin-bottom: 4px;
+}
+
+.btn-conheca {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 11px 38px;
+    background: #8b502e;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-conheca:hover {
+    background: #6e3d22;
+}
+
+.seta {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 36px;
+    color: #8b502e;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.seta.esquerda,
+.seta.esquerda-e {
+    left: 30px;
+}
+
+.seta.direita,
+.seta.direita-e {
+    right: 30px;
+}
+
+/* =====================
+   BOTÃO CATÁLOGO
+===================== */
+.area-botao {
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 50px;
+}
+
+.botao-catalogo {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: #d4d2d2;
+    color: #2c3e50;
+    text-decoration: none;
+    padding: 16px 40px;
+    border-radius: 8px;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
+    font-weight: 700;
+    font-size: 20px;
+    box-shadow: 5px 5px 0px #9a9a9a;
+    transition: 0.3s;
+}
+
+.botao-catalogo:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0px #9a9a9a;
+}
+
+.seta-botao {
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid #2c3e50;
+    border-top: 2px solid #2c3e50;
+    transform: rotate(45deg);
+    display: inline-block;
+}
+
+/* =====================
+   SEÇÃO PÉRCIO
+===================== */
+.percio {
+    padding: 40px 60px 60px 60px;
+    background: #f5f4f5;
+}
+
+.percio-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 60px;
+}
+
+/* FOTO MAIOR */
+.percio-img img {
+    width: 380px;
+    height: 500px;
+    object-fit: cover;
+    border: 2px solid #8b502e;
+    display: block;
+}
+
+.percio-texto h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: #0b1d2e;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.percio-texto h2 .destaque {
+    color: #8b502e;
+    font-style: italic;
+}
+
+.percio-texto p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #555;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+}
+
+.botao-centro {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.botao-percio {
+    display: inline-block;
+    background: #d4d2d2;
+    color: #000;
+    text-decoration: none;
+    padding: 14px 50px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    border-radius: 8px;
+    box-shadow: 5px 5px 0px #9a9a9a;
+    transition: 0.3s;
+}
+
+.botao-percio:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0px #9a9a9a;
+}
+
+/* =====================
+   EMBARCAÇÕES ENTREGUES — só fotos
+===================== */
+.entregues {
+    background: #d8dadc;
+    padding-top: 0;
+    padding-bottom: 70px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.titulo-entregues {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    letter-spacing: 4px;
+    color: #2c3e50;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.18);
+    margin-bottom: 12px;
+    padding-top: 60px;
+}
+
+.card-entregue {
+    min-width: 380px;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.card-entregue img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.card-entregue img:hover {
+    transform: scale(1.04);
+}
+
+/* =====================
+   RODAPÉ
+===================== */
+footer {
+    background: #0b1d2e;
+    color: white;
+    height: 90px;
+    padding: 0 60px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.logo-rodape {
+    margin-bottom: 20px;
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+}
+
+.footer-contato {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: white;
+    line-height: 1.6;
+}
+
+.footer-titulo {
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.footer-separador {
+    width: 1px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+    gap:60px;
+}
+
+.footer-icones {
+    display: flex;
+    align-items: center;
+}
+
+.footer-icone-link img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+
+.footer-icone-link:hover img {
+    opacity: 1;
+}

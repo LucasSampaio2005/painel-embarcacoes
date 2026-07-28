@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Painel Administrativo</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #0b1d2e;
+    --navy-2: #14283c;
+    --border: #d8dce1;
+    --danger: #b3402f;
+    --font: 'Montserrat', Arial, sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: var(--font);
+    background: var(--navy);
+  }
+  .caixa{
+    width:100%;
+    max-width: 380px;
+    background:#fff;
+    border-radius:10px;
+    padding:36px 32px;
+    margin: 20px;
+  }
+  .caixa h1{
+    font-size:1.15rem;
+    text-align:center;
+    color: var(--navy);
+    margin: 0 0 6px;
+    letter-spacing:0.5px;
+  }
+  .caixa p.sub{
+    text-align:center;
+    font-size:0.85rem;
+    color:#777;
+    margin: 0 0 24px;
+  }
+  label{
+    display:block;
+    font-size:0.75rem;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:#666;
+    margin-bottom:5px;
+  }
+  input{
+    width:100%;
+    padding:12px 14px;
+    font-family: var(--font);
+    font-size:1rem;
+    border:1px solid var(--border);
+    border-radius:6px;
+    margin-bottom:16px;
+  }
+  button{
+    width:100%;
+    padding:13px;
+    background: var(--navy);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    font-family: var(--font);
+    font-weight:600;
+    font-size:0.9rem;
+    letter-spacing:0.5px;
+    cursor:pointer;
+  }
+  button:hover{ background: var(--navy-2); }
+  button:disabled{ opacity: 0.6; cursor: default; }
+  .erro{
+    color: var(--danger);
+    font-size:0.85rem;
+    min-height:18px;
+    margin: -6px 0 14px;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+
+  <div class="caixa">
+    <h1>PAINEL ADMINISTRATIVO</h1>
+    <p class="sub">Acesso restrito — Schaefer Yachts</p>
+
+    <div class="erro" id="erro"></div>
+
+    <label>Usuário</label>
+    <input type="text" id="usuario" autocomplete="username">
+
+    <label>Senha</label>
+    <input type="password" id="senha" autocomplete="current-password">
+
+    <button id="btn-entrar">Entrar</button>
+  </div>
+
+<script>
+async function tentarLogin(){
+  const usuario = document.getElementById('usuario').value.trim();
+  const senha = document.getElementById('senha').value;
+  const erroEl = document.getElementById('erro');
+  const btn = document.getElementById('btn-entrar');
+
+  btn.disabled = true;
+  erroEl.textContent = '';
+
+  try {
+    const resposta = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usuario, senha })
+    });
+    const dados = await resposta.json();
+
+    if (dados.ok) {
+      window.location.href = '/admin.html';
+    } else {
+      erroEl.textContent = dados.erro || 'Usuário ou senha incorretos.';
+    }
+  } catch (e) {
+    erroEl.textContent = 'Não foi possível conectar ao servidor.';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('btn-entrar').addEventListener('click', tentarLogin);
+document.getElementById('senha').addEventListener('keydown', e => { if (e.key === 'Enter') tentarLogin(); });
+document.getElementById('usuario').addEventListener('keydown', e => { if (e.key === 'Enter') tentarLogin(); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  { "modelo": "V33 SPORT FISH", "ano": "0 km", "motorizacao": "2x Mercury 300HP V8 (popa)", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/v33.jpg", "condicao": "novo", "pdf": "v33.pdf" },
+  { "modelo": "SCHAEFER V34", "ano": "0 km", "motorizacao": "2x Mercury 300HP V8 (popa)", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/v34.png", "condicao": "novo", "pdf": "V34.pdf" },
+  { "modelo": "SCHAEFER V44", "ano": "0 km", "motorizacao": "Motor de popa (tri-motor)", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/v44.jpg", "condicao": "novo", "pdf": "v44.pdf" },
+  { "modelo": "SCHAEFER 380", "ano": "0 km", "motorizacao": "Motor de popa ou de centro", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/s380.jpg", "condicao": "novo", "pdf": "s380.pdf" },
+  { "modelo": "SCHAEFER 660", "ano": "0 km", "motorizacao": "Volvo Penta IPS 950 ou IPS 1050", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/s660.jpg", "condicao": "novo", "pdf": "Schaefer660.pdf" },
+  { "modelo": "SCHAEFER 510GT", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/510.png", "condicao": "novo", "pdf": "510GT.pdf" },
+  { "modelo": "SCHAEFER 26M", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/26M.png", "condicao": "novo", "pdf": "26M.pdf" },
+  { "modelo": "SCHAEFER 770", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/770.png", "condicao": "novo", "pdf": "Schaefer770.pdf" },
+  { "modelo": "SCHAEFER 450", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/450.png", "condicao": "novo", "pdf": "450.pdf" },
+  { "modelo": "MODELO", "ano": "2023", "motorizacao": "2x 435HP", "localizacao": "Florianópolis - SC", "foto": "img/iate.jpg", "condicao": "seminovo", "pdf": "" },
+  { "modelo": "MODELO", "ano": "2023", "motorizacao": "2x 435HP", "localizacao": "Florianópolis - SC", "foto": "img/iate.jpg", "condicao": "seminovo", "pdf": "" },
+  { "modelo": "MODELO", "ano": "2023", "motorizacao": "2x 435HP", "localizacao": "Florianópolis - SC", "foto": "img/iate.jpg", "condicao": "seminovo", "pdf": "" }
+]

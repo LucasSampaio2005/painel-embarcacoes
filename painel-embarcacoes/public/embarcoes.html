@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embarcações</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+  <!-- MENU OVERLAY -->
+  <div id="menu-overlay" class="menu-overlay">
+    <div class="menu-content">
+      <div class="fechar" onclick="fecharMenu()">&#10005;</div>
+      <a href="index.html">INÍCIO</a>
+      <a href="percio.html">PÉRCIO BERALDO</a>
+      <a href="embarcoes.html">EMBARCAÇÕES</a>
+    </div>
+  </div>
+
+  <header>
+    <div class="logo-area">
+      <img src="img/logo.png" class="logo" alt="Logo da empresa">
+    </div>
+    <div class="menu" onclick="abrirMenu()">MENU ☰</div>
+  </header>
+
+  <section class="hero">
+    <h1>Embarcações</h1>
+    <p>Novos e seminovos selecionados com procedência e transparência.</p>
+  </section>
+
+  <section class="filters">
+    <div>
+      <h3>Condição</h3>
+      <ul id="filtro-condicao">
+        <!-- Gerado via JS a partir de CONDICOES -->
+      </ul>
+    </div>
+    <div class="filters-actions">
+      <button class="clear-filters" id="btn-limpar">Limpar filtros</button>
+    </div>
+  </section>
+
+  <section class="listing" id="boat-list">
+    <!-- Cards gerados dinamicamente a partir da API /api/boats, filtrados conforme os checkboxes acima -->
+  </section>
+
+  <p class="empty-msg" id="empty-msg" style="display:none;">Nenhuma embarcação encontrada para os filtros selecionados.</p>
+
+  <footer>
+    <img src="img/logo.png" class="logo-rodape">
+
+    <div class="footer-icones">
+      <a href="https://www.instagram.com/percio.schaeferyachts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" class="footer-icone-link">
+        <img src="img/insta.png" alt="Instagram">
+      </a>
+      <a href="https://wa.me/5548999950413" class="footer-icone-link">
+        <img src="img/whats.png" alt="WhatsApp">
+      </a>
+    </div>
+
+    <div class="footer-separador"></div>
+
+    <div class="footer-contato">
+      <span class="footer-titulo">Contato</span>
+      <span>(48) 999950413</span>
+      <span>✉ percio.beraldo@schaeferyachts.com.br</span>
+    </div>
+  </footer>
+
+  <script src="menu.js"></script>
+  <script>
+    // ---------- CONFIGURAÇÃO DOS FILTROS ----------
+    const CONDICOES = [
+      { valor: "novo",     label: "Novos" },
+      { valor: "seminovo", label: "Seminovos" },
+    ];
+
+    // ---------- DADOS DAS EMBARCAÇÕES ----------
+    // Os barcos agora vêm da API (/api/boats), servida pelo backend Express + SQLite.
+    // O painel admin.html grava direto no banco, sem precisar mexer em arquivo nenhum.
+    let boats = [];
+
+    async function carregarBarcos(){
+      try {
+        const resposta = await fetch('/api/boats', { cache: 'no-store' });
+        boats = await resposta.json();
+      } catch (erro) {
+        console.error('Não foi possível carregar as embarcações:', erro);
+        boats = [];
+      }
+      aplicarFiltros();
+    }
+
+    // ---------- RENDERIZAÇÃO DOS FILTROS ----------
+    function renderFiltroRadio(container, opcoes, nomeGrupo){
+      container.innerHTML = opcoes.map(op => `
+        <li>
+          <label>
+            <input type="radio" name="${nomeGrupo}" value="${op.valor}">
+            ${op.label}
+          </label>
+        </li>
+      `).join('');
+    }
+    renderFiltroRadio(document.getElementById('filtro-condicao'), CONDICOES, 'condicao');
+
+    // ---------- RENDERIZAÇÃO DOS CARDS ----------
+    const list = document.getElementById('boat-list');
+    const emptyMsg = document.getElementById('empty-msg');
+
+    function renderBoats(items){
+      list.innerHTML = '';
+      emptyMsg.style.display = items.length ? 'none' : 'block';
+      items.forEach(b => {
+        const card = document.createElement('div');
+        card.className = 'boat-card';
+        card.innerHTML = `
+          <div class="photo" style="background-image:url('${b.foto}')"></div>
+          <div class="info">
+            <h2>${b.modelo}</h2>
+            <p>${b.ano}</p>
+            <p>${b.motorizacao}</p>
+            <p>${b.localizacao}</p>
+            ${b.pdf ? `<a href="${b.pdf}" target="_blank" rel="noopener" class="btn-conheca">Conheça mais</a>` : ''}
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // ---------- LÓGICA DE FILTRAGEM ----------
+    function getSelecionados(nomeGrupo){
+      return Array.from(document.querySelectorAll(`input[name="${nomeGrupo}"]:checked`))
+                  .map(input => input.value);
+    }
+
+    function aplicarFiltros(){
+      const condicaoSelecionada = getSelecionados('condicao');
+
+      const filtrados = boats.filter(b => {
+        const passaCondicao = condicaoSelecionada.length === 0 || condicaoSelecionada.includes(b.condicao);
+        return passaCondicao;
+      });
+
+      renderBoats(filtrados);
+    }
+
+    document.getElementById('filtro-condicao').addEventListener('change', aplicarFiltros);
+
+    document.getElementById('btn-limpar').addEventListener('click', () => {
+      document.querySelectorAll('.filters input[type="checkbox"], .filters input[type="radio"]').forEach(cb => cb.checked = false);
+      aplicarFiltros();
+    });
+
+    // Carregamento inicial
+    carregarBarcos();
+  </script>
+
+</body>
+</html>

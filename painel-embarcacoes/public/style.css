@@ -1,0 +1,271 @@
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    background: #efefef;
+}
+
+/* MENU */
+header {
+    background: #0b1d2e;
+    color: white;
+    min-height: 100px;
+    padding: 16px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+.logo-area {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.menu {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+/* MENU OVERLAY */
+.menu-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(5,25,45,0.97),
+        rgba(5,25,45,0.98)
+    );
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.menu-content{
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* linhas */
+.menu-content::before,
+.menu-content::after{
+    content: "";
+    display: block;
+    width: 220px;
+    height: 1px;
+    background: white;
+    margin: 25px auto;
+}
+
+/* links */
+.menu-content a{
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    margin: 28px 0;
+    letter-spacing: 3px;
+    transition: 0.3s;
+}
+
+/* hover */
+.menu-content a:hover{
+    color: #c49a6c;
+    transform: scale(1.05);
+}
+
+/* botão fechar */
+.fechar{
+    position: absolute;
+    top: 40px;
+    right: 60px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+
+/* BANNER */
+.banner {
+    width: 100%;
+    height: 310px;
+
+    background-image: linear-gradient(
+        rgba(0,0,0,0.35),
+        rgba(0,0,0,0.35)
+    ), url("img/banner.jpg");
+
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner h1 {
+   position:relative;
+    color:white;
+    font-size:55px;
+    font-weight:200;
+    letter-spacing:5px;
+    text-shadow:0 3px 12px rgba(0,0,0,0.6);
+}
+
+/* CONTEÚDO */
+.conteudo {
+    padding: 70px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* FOTO */
+.foto img { 
+    width: 100%;
+    max-width: 490px;
+    box-shadow: 0px 20px 25px rgba(0,0,0,0.2);
+    margin-top: 40px; /* desce a foto */
+}
+
+/* TEXTO */
+.texto {
+    flex: 1 1 400px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.texto h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    color: #2c3e50;
+    font-size: 40px;
+    line-height: 1.2;
+    
+}
+
+.texto span {
+    color: #a5673f;
+    font-weight: 600;
+    font-size: 50px;
+}
+
+.texto p {
+    line-height: 1.6;
+    font-size: 15px;
+    color: #555;
+}
+
+/* BOTÃO */
+.area-botao{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.botao-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    background: #0b2235;
+    color: white;
+
+    padding: 16px 28px;
+    border-radius: 22px;
+
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.25);
+
+    margin-top: 40px;
+}
+
+.icone-whats {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* RODAPÉ */
+footer {
+    background: #0b1d2e;
+    color: white;
+    height: 90px;
+    padding: 0 60px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.logo-rodape {
+    margin-bottom: 20px;
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+}
+
+.footer-contato {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: white;
+    line-height: 1.6;
+}
+
+.footer-titulo {
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.footer-separador {
+    width: 1px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+    gap: 60px;
+}
+
+.footer-icones {
+    display: flex;
+    align-items: center;
+}
+
+.footer-icone-link img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+
+.footer-icone-link:hover img {
+    opacity: 1;
+}

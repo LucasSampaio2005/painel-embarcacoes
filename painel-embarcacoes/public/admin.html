@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Embarcações</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0b1d2e;
+      --navy-2: #14283c;
+      --gold: #c49a6c;
+      --bg: #f2f3f5;
+      --border: #d8dce1;
+      --danger: #b3402f;
+      --ok: #256b3b;
+      --font: 'Montserrat', Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--navy);
+    }
+
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    header button {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #fff;
+      padding: 8px 14px;
+      font-family: var(--font);
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    header button:hover { background: rgba(255, 255, 255, 0.1); }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 20px 100px;
+    }
+
+    .aviso {
+      background: #eef4fb;
+      border: 1px solid #cfe0f2;
+      color: #264a68;
+      border-radius: 8px;
+      padding: 16px 18px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .status-msg {
+      font-size: 0.85rem;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 18px;
+      display: none;
+    }
+    .status-msg.ok { display: block; background: #e4f3e8; color: var(--ok); }
+    .status-msg.erro { display: block; background: #fbe7e4; color: var(--danger); }
+    .status-msg.loading { display: block; background: #eef1f4; color: #555; }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .toolbar h2 { font-size: 1.1rem; margin: 0; }
+
+    .btn {
+      display: inline-block;
+      padding: 11px 22px;
+      border-radius: 6px;
+      border: none;
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--navy); color: #fff; }
+    .btn-primary:hover { background: var(--navy-2); }
+    .btn-primary:disabled { opacity: 0.6; cursor: default; }
+    .btn-secondary { background: #e8eaed; color: var(--navy); }
+    .btn-secondary:hover { background: #dfe2e6; }
+    .btn-danger { background: none; color: var(--danger); border: 1px solid var(--danger); }
+    .btn-danger:hover { background: var(--danger); color: #fff; }
+
+    .boat-row {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .boat-row-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .boat-row-head span {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+    }
+    .boat-row-acoes { display: flex; gap: 10px; }
+
+    .campo label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .campo input,
+    .campo select {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: var(--font);
+      font-size: 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+    }
+    .campos-barco {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    .campos-barco .full { grid-column: 1 / -1; }
+
+    .preview-foto {
+      width: 160px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+      background: #eee;
+      display: block;
+    }
+    .dica { font-size: 0.75rem; color: #888; margin-top: 4px; }
+
+    .nova-embarcacao {
+      background: #fff;
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .nova-embarcacao h2 { font-size: 1rem; margin: 0 0 16px; }
+
+    @media (max-width: 700px) {
+      .campos-barco { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>PAINEL — EMBARCAÇÕES</h1>
+    <button id="btn-logout">Sair</button>
+  </header>
+
+  <main>
+
+    <div class="aviso">
+      <strong>Como funciona:</strong> edite os campos de uma embarcação e clique em <strong>"Salvar"</strong>
+      naquela linha — a alteração já vai direto para o banco de dados e aparece no site na hora.
+      Para trocar a foto ou o PDF, escolha o novo arquivo antes de salvar. Para adicionar uma
+      embarcação nova, preencha o formulário no fim da página.
+    </div>
+
+    <div id="status-msg" class="status-msg"></div>
+
+    <div class="toolbar">
+      <h2>Embarcações cadastradas</h2>
+    </div>
+
+    <div id="lista-barcos"></div>
+
+    <div class="nova-embarcacao">
+      <h2>+ Adicionar nova embarcação</h2>
+      <form id="form-novo">
+        <div class="campos-barco">
+          <div class="campo">
+            <label>Modelo</label>
+            <input type="text" name="modelo" required>
+          </div>
+          <div class="campo">
+            <label>Ano</label>
+            <input type="text" name="ano">
+          </div>
+          <div class="campo">
+            <label>Condição</label>
+            <select name="condicao">
+              <option value="novo">Novo</option>
+              <option value="seminovo">Seminovo</option>
+            </select>
+          </div>
+          <div class="campo full">
+            <label>Motorização</label>
+            <input type="text" name="motorizacao">
+          </div>
+          <div class="campo full">
+            <label>Localização</label>
+            <input type="text" name="localizacao">
+          </div>
+          <div class="campo full">
+            <label>Foto</label>
+            <input type="file" name="foto" accept="image/*">
+            <div class="dica">Escolha o arquivo de imagem direto do seu computador.</div>
+          </div>
+          <div class="campo full">
+            <label>PDF do catálogo (opcional)</label>
+            <input type="file" name="pdf" accept="application/pdf">
+          </div>
+        </div>
+        <div style="margin-top:16px;">
+          <button type="submit" class="btn btn-primary">Adicionar embarcação</button>
+        </div>
+      </form>
+    </div>
+
+  </main>
+
+  <script>
+    /* =========================================================================
+       PROTEÇÃO DE ACESSO
+       O servidor já protege /admin.html no backend, mas conferimos a sessão
+       aqui também para o botão "Sair" funcionar de forma consistente.
+       ========================================================================= */
+    async function verificarSessao() {
+      const r = await fetch('/api/sessao');
+      const d = await r.json();
+      if (!d.autenticado) window.location.href = '/login.html';
+    }
+    verificarSessao();
+
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST' });
+      window.location.href = '/login.html';
+    });
+
+    function mostrarStatus(msg, tipo) {
+      const el = document.getElementById('status-msg');
+      el.textContent = msg;
+      el.className = 'status-msg ' + (tipo || '');
+    }
+
+    /* =========================================================================
+       CARREGAR E RENDERIZAR A LISTA
+       ========================================================================= */
+    async function carregarBarcos() {
+      mostrarStatus('Carregando embarcações...', 'loading');
+      try {
+        const resposta = await fetch('/api/boats', { cache: 'no-store' });
+        const boats = await resposta.json();
+        renderLista(boats);
+        mostrarStatus('', '');
+      } catch (erro) {
+        mostrarStatus('Não foi possível carregar as embarcações. Detalhe: ' + erro.message, 'erro');
+      }
+    }
+
+    function escapeAttr(valor) {
+      return String(valor || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    }
+
+    function renderLista(boats) {
+      const lista = document.getElementById('lista-barcos');
+      lista.innerHTML = '';
+
+      boats.forEach((b) => {
+        const row = document.createElement('div');
+        row.className = 'boat-row';
+        row.innerHTML = `
+          <form data-id="${b.id}">
+            <div class="boat-row-head">
+              <span>Embarcação #${b.id}</span>
+              <div class="boat-row-acoes">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="button" class="btn btn-danger" data-remover="${b.id}">Remover</button>
+              </div>
+            </div>
+            <div class="campos-barco">
+              <div class="campo">
+                <label>Modelo</label>
+                <input type="text" name="modelo" value="${escapeAttr(b.modelo)}">
+              </div>
+              <div class="campo">
+                <label>Ano</label>
+                <input type="text" name="ano" value="${escapeAttr(b.ano)}">
+              </div>
+              <div class="campo">
+                <label>Condição</label>
+                <select name="condicao">
+                  <option value="novo" ${b.condicao === 'novo' ? 'selected' : ''}>Novo</option>
+                  <option value="seminovo" ${b.condicao === 'seminovo' ? 'selected' : ''}>Seminovo</option>
+                </select>
+              </div>
+              <div class="campo full">
+                <label>Motorização</label>
+                <input type="text" name="motorizacao" value="${escapeAttr(b.motorizacao)}">
+              </div>
+              <div class="campo full">
+                <label>Localização</label>
+                <input type="text" name="localizacao" value="${escapeAttr(b.localizacao)}">
+              </div>
+              <div class="campo full">
+                <label>Foto atual</label>
+                <img class="preview-foto" src="${b.foto || ''}" onerror="this.style.opacity=0.15" alt="">
+                <input type="file" name="foto" accept="image/*">
+                <div class="dica">Só escolha um arquivo aqui se quiser trocar a foto.</div>
+              </div>
+              <div class="campo full">
+                <label>PDF do catálogo</label>
+                <div class="dica">${b.pdf ? 'Atual: ' + b.pdf : 'Nenhum PDF cadastrado.'}</div>
+                <input type="file" name="pdf" accept="application/pdf">
+                <div class="dica">Só escolha um arquivo aqui se quiser trocar o PDF.</div>
+              </div>
+            </div>
+          </form>
+        `;
+        lista.appendChild(row);
+      });
+
+      lista.querySelectorAll('form[data-id]').forEach(form => {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const id = form.dataset.id;
+          const dados = new FormData(form);
+          try {
+            const resp = await fetch('/api/boats/' + id, { method: 'PUT', body: dados });
+            if (!resp.ok) throw new Error('Falha ao salvar');
+            mostrarStatus('Embarcação #' + id + ' salva com sucesso.', 'ok');
+            carregarBarcos();
+          } catch (erro) {
+            mostrarStatus('Erro ao salvar embarcação #' + id + '.', 'erro');
+          }
+        });
+      });
+
+      lista.querySelectorAll('button[data-remover]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.remover;
+          if (!confirm('Remover esta embarcação definitivamente?')) return;
+          try {
+            await fetch('/api/boats/' + id, { method: 'DELETE' });
+            mostrarStatus('Embarcação #' + id + ' removida.', 'ok');
+            carregarBarcos();
+          } catch (erro) {
+            mostrarStatus('Erro ao remover embarcação #' + id + '.', 'erro');
+          }
+        });
+      });
+    }
+
+    /* =========================================================================
+       ADICIONAR NOVA EMBARCAÇÃO
+       ========================================================================= */
+    document.getElementById('form-novo').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const dados = new FormData(form);
+      try {
+        const resp = await fetch('/api/boats', { method: 'POST', body: dados });
+        if (!resp.ok) throw new Error('Falha ao adicionar');
+        mostrarStatus('Embarcação adicionada com sucesso.', 'ok');
+        form.reset();
+        carregarBarcos();
+      } catch (erro) {
+        mostrarStatus('Erro ao adicionar embarcação.', 'erro');
+      }
+    });
+
+    carregarBarcos();
+  </script>
+
+</body>
+
+</html>
