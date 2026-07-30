@@ -64,7 +64,7 @@ body {
 ===================== */
 .menu {
     position: absolute;
-    top: 53px;
+    top: -10px;
     right: 40px;
     z-index: 10;
     background: none;
@@ -557,7 +557,7 @@ footer {
     height: 50px;
     background: rgba(255, 255, 255, 0.3);
     flex-shrink: 0;
-    gap:60px;
+    gap: 60px;
 }
 
 .footer-icones {
@@ -576,4 +576,258 @@ footer {
 
 .footer-icone-link:hover img {
     opacity: 1;
+}
+
+/* =========================================================================
+   RESPONSIVO
+   ========================================================================= */
+
+/* ---- TABLET (até 1024px) ---- */
+@media (max-width: 1024px) {
+    .banner {
+        height: 600px;
+    }
+
+    .logo-texto {
+        width: 85%;
+        font-size: 17px;
+    }
+
+    .carrossel-container {
+        width: 620px;
+    }
+
+    .card {
+        min-width: 300px;
+    }
+
+    .percio-img img {
+        width: 300px;
+        height: 400px;
+    }
+
+    .percio-container {
+        gap: 36px;
+    }
+}
+
+/* ---- MOBILE (até 768px) ---- */
+@media (max-width: 768px) {
+
+    /* BANNER — reduz altura e reposiciona a onda para acompanhar o banner
+       (antes ficava presa a 290px do topo, cobrindo o conteúdo quando o
+       banner encolhe) */
+    .banner {
+        height: 480px;
+        padding: 20px;
+    }
+
+    .logo-area {
+        top: 10px;
+        left: 16px;
+        width: calc(100% - 32px);
+    }
+
+    .logoprinc {
+        width: 150px;
+    }
+
+    .logo-titulo {
+        font-size: 24px;
+    }
+
+    .logo-texto {
+        width: 100%;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .menu {
+        top: 50px;
+        right: 16px;
+    }
+
+    .menu-texto {
+        display: none;
+        /* mantém só o ícone, economiza espaço */
+    }
+
+    .onda {
+        top: auto;
+        bottom: -130px;
+        /* acompanha a base do banner em qualquer altura */
+    }
+
+    .embarcacoes {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    .titulo-embarcacoes,
+    .titulo-entregues {
+        font-size: 24px;
+        letter-spacing: 2px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .linha-embarcacoes {
+        width: 160px;
+    }
+
+    /* CARROSSEL — a "seta" ficava em cima da foto porque o card ocupava
+       a largura toda; agora sobra espaço nas laterais pras setas, e elas
+       ganham um fundo circular pra não parecer que estão "no meio" da foto */
+    .carrossel {
+        margin-top: 40px;
+    }
+
+    .carrossel-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 42px;
+    }
+
+    .card {
+        min-width: 100%;
+    }
+
+    .card img {
+        height: 200px;
+    }
+
+    .seta {
+        font-size: 20px;
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(11, 29, 46, 0.75);
+        color: #fff;
+        border-radius: 50%;
+    }
+
+    .seta.esquerda,
+    .seta.esquerda-e {
+        left: 4px;
+    }
+
+    .seta.direita,
+    .seta.direita-e {
+        right: 4px;
+    }
+
+    .area-botao {
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+
+    .botao-catalogo {
+        padding: 14px 30px;
+        font-size: 16px;
+    }
+
+    /* SEÇÃO PÉRCIO — empilha foto em cima do texto em vez de lado a lado */
+    .percio {
+        padding: 30px 20px 40px;
+    }
+
+    .percio-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 24px;
+    }
+
+    .percio-img img {
+        width: 220px;
+        height: 280px;
+    }
+
+    .percio-texto h2 {
+        font-size: 20px;
+    }
+
+    .percio-texto h2 .destaque {
+        font-size: 24px;
+    }
+
+    .percio-texto p {
+        font-size: 14px;
+    }
+
+    /* EMBARCAÇÕES ENTREGUES — mesmo ajuste do carrossel principal */
+    .titulo-entregues {
+        padding-top: 40px;
+    }
+
+    .card-entregue {
+        min-width: 100%;
+    }
+
+    .card-entregue img {
+        height: 190px;
+    }
+
+    /* RODAPÉ — empilha em vez de espremer tudo numa linha só */
+    footer {
+        flex-direction: column;
+        height: auto;
+        padding: 24px 20px;
+        gap: 14px;
+        text-align: center;
+    }
+
+    .logo-rodape {
+        margin-bottom: 0;
+        height: 60px;
+    }
+
+    .footer-contato {
+        align-items: center;
+    }
+
+    .footer-separador {
+        display: none;
+    }
+
+    .footer-icones {
+        gap: 20px;
+    }
+
+    .footer-icone-link img {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* ---- TELAS PEQUENAS (até 420px) ---- */
+@media (max-width: 420px) {
+    .banner {
+        height: 440px;
+    }
+
+    .logo-titulo {
+        font-size: 20px;
+    }
+
+    .whatsapp span {
+        display: none;
+    }
+
+    .whatsapp {
+        padding: 12px;
+        border-radius: 50%;
+    }
+
+    .whatsapp .icone {
+        border: none;
+        width: 46px;
+        height: 46px;
+    }
+
+    .whatsapp .icone img {
+        width: 28px;
+    }
 }
