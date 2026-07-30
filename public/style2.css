@@ -107,7 +107,7 @@ header{
     cursor: pointer;
 }
 
-/* HERO (DESKTOP MANTIDO INTACTO) */
+/* HERO (DESKTOP) */
 .hero{
     position:relative;
     min-height: 260px;
@@ -358,12 +358,13 @@ footer{
         height: 55px;
     }
 
-    /* HERO / BANNER PRINCIPAL (AJUSTADO PARA AUMENTAR A IMAGEM E ELIMINAR A FAIXA CINZA) */
+    /* HERO / BANNER PRINCIPAL (CORRIGIDO PARA O_BANNER FICAR 100% PREENCHIDO PELA IMAGEM) */
     .hero {
-        min-height: 220px; /* Aumenta o tamanho vertical da imagem do barco */
-        padding: 50px 20px; /* Expande o preenchimento mantendo o conteúdo bem coberto */
-        background-position: center center;
-        background-size: cover; /* Garante que a foto cubra 100% da área sem sobrar faixa cinza */
+        min-height: 250px; /* Aumentado para valorizar o barco */
+        padding: 60px 20px;
+        background-image: linear-gradient(180deg, rgba(15,30,50,0.55), rgba(15,30,50,0.65)), url('img/embarcacao.png');
+        background-position: center center; /* Alinha no centro exato no mobile */
+        background-size: cover; /* Cobre 100% do bloco sem sobras de fundo */
         background-repeat: no-repeat;
     }
 
@@ -480,8 +481,8 @@ footer{
 /* ---- TELAS PEQUENAS (até 420px) ---- */
 @media (max-width: 420px) {
     .hero {
-        min-height: 190px;
-        padding: 40px 14px;
+        min-height: 210px;
+        padding: 45px 14px;
     }
 
     .hero h1 {
