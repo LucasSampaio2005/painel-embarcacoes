@@ -830,3 +830,15 @@ footer {
         width: 28px;
     }
 }
+
+/* PADRÃO DO BOTÃO DE MENU NO CELULAR */
+header .menu,
+.banner .menu {
+    top: 28px !important;      /* Mantém a mesma distância do topo */
+    right: 20px !important;    /* Mantém a mesma distância da direita */
+    font-size: 14px !important; /* Mantém o mesmo tamanho de texto */
+    letter-spacing: 1px;
+}
+
+/* ESCONDE O TEXTO "MENU" SE QUISER MANTER SÓ O ÍCONE (opcional) */
+/* .menu-texto { display: none; } */
