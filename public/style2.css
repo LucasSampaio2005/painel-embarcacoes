@@ -17,6 +17,10 @@ body{
     background: #fff;
 }
 
+img{
+    max-width: 100%;
+}
+
 /* MENU OVERLAY */
 .menu-overlay{
     position: fixed;
@@ -37,6 +41,8 @@ body{
 .menu-content{
     text-align: center;
     font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    padding: 0 20px;
 }
 
 /* linhas */
@@ -45,6 +51,7 @@ body{
     content: "";
     display: block;
     width: 220px;
+    max-width: 80%;
     height: 1px;
     background: white;
     margin: 25px auto;
@@ -105,6 +112,7 @@ header{
     font-family: var(--font-montserrat);
     letter-spacing: 2px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 /* HERO (DESKTOP) */
@@ -170,6 +178,7 @@ header{
     width: 15px;
     height: 15px;
     cursor:pointer;
+    flex-shrink: 0;
 }
 .filters-actions{
     display:flex;
@@ -306,198 +315,155 @@ footer{
     opacity: 1;
 }
 
-/* =========================================================================
-   RESPONSIVO — EMBARCAÇÕES (embarcoes.html)
-   ========================================================================= */
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
 
-/* ---- TABLET (até 1024px) ---- */
-@media (max-width: 1024px) {
-    header {
-        padding: 16px 40px;
+/* TABLETS (até 1024px) */
+@media (max-width: 1024px){
+    header{
+        padding: 14px 32px;
     }
-
-    .hero {
-        min-height: 220px;
-        padding: 40px 20px;
-    }
-
-    .hero h1 {
+    .hero h1{
         font-size: 2.2rem;
     }
-
-    .filters {
-        padding: 24px 30px;
+    .boat-card .photo{
+        min-height: 260px;
     }
-
-    .listing {
-        padding: 10px 30px 36px;
+    .filters{
+        padding: 24px 20px;
+        gap: 28px;
     }
-
-    .boat-card .photo {
-        min-height: 280px;
-    }
-}
-
-/* ---- INTERMEDIÁRIO (até 640px) ---- */
-@media (max-width: 640px) {
-    .filters {
-        gap: 24px;
+    footer{
+        padding: 0 32px;
+        gap: 36px;
     }
 }
 
-/* ---- MOBILE (até 768px) ---- */
-@media (max-width: 768px) {
-
-    /* HEADER */
-    header {
+/* TABLETS PEQUENOS / MOBILE GRANDE (até 768px) */
+@media (max-width: 768px){
+    header{
+        padding: 14px 20px;
         min-height: 80px;
-        padding: 12px 20px;
     }
-
-    .logo {
-        height: 55px;
+    .logo{
+        height: 60px;
     }
-
-    /* HERO / BANNER PRINCIPAL (CORRIGIDO PARA O_BANNER FICAR 100% PREENCHIDO PELA IMAGEM) */
-    .hero {
-        min-height: 250px; /* Aumentado para valorizar o barco */
-        padding: 60px 20px;
-        background-image: linear-gradient(180deg, rgba(15,30,50,0.55), rgba(15,30,50,0.65)), url('img/embarcacao.png');
-        background-position: center center; /* Alinha no centro exato no mobile */
-        background-size: cover; /* Cobre 100% do bloco sem sobras de fundo */
-        background-repeat: no-repeat;
-    }
-
-    .hero h1 {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-        margin-bottom: 8px;
-    }
-
-    .hero p {
+    .menu{
         font-size: 0.9rem;
     }
 
-    /* FILTROS */
-    .filters {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-        padding: 20px 16px;
+    .menu-content a{
+        font-size: 24px;
+        margin: 20px 0;
     }
-
-    .filters-actions {
-        width: 100%;
-    }
-
-    .clear-filters {
-        width: 100%;
-        text-align: center;
-        padding: 10px 14px;
-    }
-
-    /* LISTAGEM DE CARDS */
-    .listing {
-        padding: 10px 16px 30px;
-        gap: 20px;
-    }
-
-    .boat-card {
-        grid-template-columns: 1fr;
-        min-height: auto;
-    }
-
-    .boat-card .photo {
-        height: 280px;
-        min-height: auto;
-        width: 100%;
-        background-size: cover;
-        background-position: center;
-    }
-
-    .boat-card .info {
-        padding: 12px 16px;
-    }
-
-    .boat-card .info h2 {
-        font-size: 1.25rem;
-    }
-
-    .boat-card .info p {
-        font-size: 0.9rem;
-    }
-
-    .btn-conheca {
-        width: 100%;
-        max-width: 260px;
-        padding: 10px 20px;
-        margin-top: 8px;
-    }
-
-    /* MENU OVERLAY */
-    .fechar {
-        top: 20px;
-        right: 25px;
+    .fechar{
+        top: 24px;
+        right: 28px;
         font-size: 32px;
     }
 
-    .menu-content a {
-        font-size: 22px;
-        margin: 20px 0;
+    .hero{
+        min-height: 200px;
+        padding: 30px 16px;
+    }
+    .hero h1{
+        font-size: 1.8rem;
+    }
+    .hero p{
+        font-size: 0.85rem;
     }
 
-    /* RODAPÉ */
-    footer {
+    .filters{
         flex-direction: column;
-        height: auto;
-        padding: 24px 20px;
-        gap: 14px;
-        text-align: center;
+        gap: 20px;
+        padding: 20px 16px;
+    }
+    .filters-actions{
+        align-items: flex-start;
+    }
+    .clear-filters{
+        width: 100%;
     }
 
-    .logo-rodape {
-        margin-bottom: 0;
-        height: 60px;
-    }
-
-    .footer-contato {
-        align-items: center;
-    }
-
-    .footer-separador {
-        display: none;
-    }
-
-    .footer-icones {
+    .listing{
+        padding: 10px 16px 28px;
         gap: 20px;
     }
 
-    .footer-icone-link img {
-        width: 44px;
-        height: 44px;
+    /* card empilha foto em cima e info embaixo */
+    .boat-card{
+        grid-template-columns: 1fr;
+    }
+    .boat-card .photo{
+        min-height: 220px;
+    }
+    .boat-card .info{
+        padding: 20px 16px;
+    }
+    .boat-card .info h2{
+        font-size: 1.3rem;
+    }
+
+    /* footer empilhado */
+    footer{
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 16px;
+        text-align: center;
+    }
+    .logo-rodape{
+        margin-bottom: 0;
+        height: 60px;
+    }
+    .footer-separador{
+        width: 60%;
+        height: 1px;
+    }
+    .footer-contato{
+        align-items: center;
+    }
+    .footer-icone-link img{
+        width: 56px;
+        height: 56px;
     }
 }
 
-/* ---- TELAS PEQUENAS (até 420px) ---- */
-@media (max-width: 420px) {
-    .hero {
-        min-height: 210px;
-        padding: 45px 14px;
-    }
-
-    .hero h1 {
+/* CELULARES PEQUENOS (até 480px) */
+@media (max-width: 480px){
+    .hero h1{
         font-size: 1.5rem;
+        letter-spacing: 1px;
     }
-
-    .hero p {
+    .hero p{
         font-size: 0.8rem;
     }
-
-    .boat-card .photo {
-        height: 230px;
+    .menu-content a{
+        font-size: 20px;
+        letter-spacing: 2px;
     }
-
-    .boat-card .info h2 {
-        font-size: 1.1rem;
+    .fechar{
+        top: 16px;
+        right: 20px;
+        font-size: 28px;
+    }
+    .boat-card .photo{
+        min-height: 180px;
+    }
+    .boat-card .info h2{
+        font-size: 1.15rem;
+    }
+    .boat-card .info p{
+        font-size: 0.9rem;
+    }
+    .btn-conheca{
+        padding: 8px 18px;
+        font-size: 0.75rem;
+    }
+    .footer-icone-link img{
+        width: 44px;
+        height: 44px;
     }
 }
