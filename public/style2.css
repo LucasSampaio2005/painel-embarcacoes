@@ -392,14 +392,20 @@
         gap: 20px;
     }
 
+    /* Ajuste na classe principal de cards */
     .boat-card {
-        grid-template-columns: 1fr; /* Empilha foto sobre texto no mobile */
-        min-height: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Removemos a min-height fixa para permitir que o conteúdo dite o tamanho de forma limpa */
+        min-height: auto; 
+        align-items: stretch; /* Força ambos os lados (foto e info) a terem exatamente a mesma altura */
+        overflow: hidden; /* Evita que quinas da imagem ou do fundo passem da borda */
     }
 
     .boat-card .photo {
-        height: 200px;
+        background: url('img/iate.jpg') center/cover no-repeat;
         width: 100%;
+        height: 100%; /* Garante que a foto ocupe 100% da altura do container cinza */
     }
 
     .boat-card .info {
