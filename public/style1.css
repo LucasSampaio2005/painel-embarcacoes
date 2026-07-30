@@ -614,15 +614,15 @@ footer {
 /* ---- MOBILE (até 768px) ---- */
 @media (max-width: 768px) {
 
-    /* BANNER — altura reduzida e alinhado ao topo */
+    /* BANNER — altura reduzida e espaçamento superior ajustado */
     .banner {
         height: 420px;
-        padding: 10px 16px;
+        padding: 0px 16px;
     }
 
-    /* LOGO E TEXTOS — puxados mais para cima */
+    /* LOGO E TEXTOS — subiram mais um pouco */
     .logo-area {
-        top: 0px;
+        top: -8px;
         left: 16px;
         width: calc(100% - 32px);
     }
@@ -633,19 +633,19 @@ footer {
 
     .logo-titulo {
         font-size: 22px;
-        margin-top: -8px;
+        margin-top: -10px;
     }
 
     .logo-texto {
         width: 100%;
         font-size: 13.5px;
         line-height: 1.4;
-        margin-top: 6px;
+        margin-top: 4px;
     }
 
-    /* MENU BOTÃO — subido junto com o cabeçalho */
+    /* MENU BOTÃO — rebaixado para alinhar perfeitamente com o topo da logo */
     .menu {
-        top: 15px;
+        top: 28px;
         right: 16px;
     }
 
@@ -653,7 +653,7 @@ footer {
         display: none;
     }
 
-    /* ONDA — acompanha o fundo do banner */
+    /* ONDA — acompanha a base do banner */
     .onda {
         top: auto;
         bottom: -100px;
