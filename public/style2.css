@@ -364,8 +364,8 @@ footer{
     }
 
     .hero{
-        min-height: 200px;
-        padding: 30px 16px;
+        background: linear-gradient(180deg, rgba(15,30,50,0.55), rgba(15,30,50,0.65)),
+                    url('img/embarcacao.png') center 50% / 160% auto no-repeat;
     }
     .hero h1{
         font-size: 1.8rem;
