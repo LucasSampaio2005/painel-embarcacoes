@@ -107,7 +107,7 @@ header{
     cursor: pointer;
 }
 
-/* HERO */
+/* HERO (DESKTOP MANTIDO INTACTO) */
 .hero{
     position:relative;
     min-height: 260px;
@@ -208,7 +208,7 @@ header{
 .boat-card .photo{
     background: url('img/iate.jpg') center/cover no-repeat;
     width: 100%;
-    min-height: 320px; /* Aumentado no desktop */
+    min-height: 320px;
 }
 .boat-card .info{
     background: var(--card-gray);
@@ -218,7 +218,7 @@ header{
     justify-content:center;
     gap: 4px;
     text-align:center;
-    padding: 12px 16px; /* Padding reduzido para a faixa cinza ficar compacta */
+    padding: 12px 16px;
 }
 .boat-card .info h2{
     font-family: var(--font-montserrat);
@@ -317,8 +317,8 @@ footer{
     }
 
     .hero {
-        min-height: 200px;
-        padding: 30px 20px;
+        min-height: 220px;
+        padding: 40px 20px;
     }
 
     .hero h1 {
@@ -358,23 +358,23 @@ footer{
         height: 55px;
     }
 
-    /* HERO / BANNER PRINCIPAL */
+    /* HERO / BANNER PRINCIPAL (AJUSTADO PARA AUMENTAR A IMAGEM E ELIMINAR A FAIXA CINZA) */
     .hero {
-        min-height: auto;
-        height: auto;
-        padding: 24px 16px;
-        background-position: center;
-        background-size: cover;
+        min-height: 220px; /* Aumenta o tamanho vertical da imagem do barco */
+        padding: 50px 20px; /* Expande o preenchimento mantendo o conteúdo bem coberto */
+        background-position: center center;
+        background-size: cover; /* Garante que a foto cubra 100% da área sem sobrar faixa cinza */
+        background-repeat: no-repeat;
     }
 
     .hero h1 {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
         letter-spacing: 1px;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }
 
     .hero p {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
     /* FILTROS */
@@ -407,7 +407,7 @@ footer{
     }
 
     .boat-card .photo {
-        height: 280px; /* Aumentado no mobile de 220px para 280px */
+        height: 280px;
         min-height: auto;
         width: 100%;
         background-size: cover;
@@ -415,7 +415,7 @@ footer{
     }
 
     .boat-card .info {
-        padding: 12px 16px; /* Faixa cinza enxuta */
+        padding: 12px 16px;
     }
 
     .boat-card .info h2 {
@@ -480,19 +480,20 @@ footer{
 /* ---- TELAS PEQUENAS (até 420px) ---- */
 @media (max-width: 420px) {
     .hero {
-        padding: 20px 12px;
+        min-height: 190px;
+        padding: 40px 14px;
     }
 
     .hero h1 {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
     }
 
     .hero p {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
 
     .boat-card .photo {
-        height: 230px; /* Aumentado em telas pequenas de 170px para 230px */
+        height: 230px;
     }
 
     .boat-card .info h2 {
