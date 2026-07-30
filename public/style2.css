@@ -303,12 +303,7 @@
     opacity: 1;
   }
 
-  @media (max-width: 640px){
-    .hero h1{ font-size: 2rem; }
-    .filters{ gap: 24px; }
-  }
-
-  /* =========================================================================
+/* =========================================================================
    RESPONSIVO — EMBARCAÇÕES (embarcoes.html)
    ========================================================================= */
 
@@ -319,7 +314,7 @@
     }
 
     .hero {
-        min-height: 220px;
+        min-height: 200px;
         padding: 30px 20px;
     }
 
@@ -340,6 +335,13 @@
     }
 }
 
+/* ---- INTERMEDIÁRIO (até 640px) ---- */
+@media (max-width: 640px) {
+    .filters {
+        gap: 24px;
+    }
+}
+
 /* ---- MOBILE (até 768px) ---- */
 @media (max-width: 768px) {
 
@@ -353,15 +355,19 @@
         height: 55px;
     }
 
-    /* HERO */
+    /* HERO / BANNER PRINCIPAL (AJUSTADO) */
     .hero {
-        min-height: 180px;
-        padding: 30px 16px;
+        min-height: auto;               /* Remove altura mínima forçada que gerava a faixa extra */
+        height: auto;                  /* Deixa o tamanho adaptar perfeitamente */
+        padding: 24px 16px;            /* Reduz os espaçamentos superiores e inferiores */
+        background-position: center;   /* Centraliza a imagem no fundo */
+        background-size: cover;
     }
 
     .hero h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         letter-spacing: 1px;
+        margin-bottom: 6px;
     }
 
     .hero p {
@@ -393,20 +399,20 @@
     }
 
     .boat-card {
-            grid-template-columns: 1fr;
-            min-height: auto;
-        }
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
 
-        .boat-card .photo {
-            height: 220px; /* Define altura fixa e proporcional para a foto no mobile */
-            width: 100%;
-            background-size: cover;
-            background-position: center;
-        }
+    .boat-card .photo {
+        height: 220px;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+    }
 
-        .boat-card .info {
-            padding: 16px; /* Mantém o bloco cinza ajustado apenas ao redor do texto */
-        }
+    .boat-card .info {
+        padding: 16px;
+    }
 
     .boat-card .info h2 {
         font-size: 1.25rem;
@@ -469,12 +475,16 @@
 
 /* ---- TELAS PEQUENAS (até 420px) ---- */
 @media (max-width: 420px) {
+    .hero {
+        padding: 20px 12px;            /* Espaçamento ainda mais enxuto em telas bem pequenas */
+    }
+
     .hero h1 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .hero p {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
     .boat-card .photo {
