@@ -830,32 +830,4 @@ footer {
         width: 28px;
     }
 }
-/* ==========================================
-   PADRÃO DO MENU OVERLAY (TELAS MÓVEIS)
-   ========================================== */
 
-/* Ajuste da tela inteira do menu */
-.menu-overlay {
-    padding: 20px;
-}
-
-/* Tamanho das opções/links do menu */
-.menu-content a {
-    font-size: 20px !important;    /* Tamanho padronizado para as letras */
-    margin: 22px 0 !important;     /* Espaçamento uniforme entre os links */
-    letter-spacing: 2px !important;
-}
-
-/* Linhas divisórias superior e inferior */
-.menu-content::before,
-.menu-content::after {
-    width: 150px !important;       /* Largura fixa para as linhas */
-    margin: 20px auto !important;
-}
-
-/* Botão de fechar (X) */
-.fechar {
-    top: 25px !important;
-    right: 25px !important;
-    font-size: 32px !important;     /* Tamanho padrão do ícone fechar */
-}
