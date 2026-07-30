@@ -7,18 +7,18 @@
     --gold-accent: #b9974f;
     --font-montserrat: 'Montserrat', Arial, Helvetica, sans-serif;
     --font-playfair: 'Playfair Display', Georgia, serif;
-  }
+}
 
-  *{ box-sizing: border-box; margin:0; padding:0; }
+*{ box-sizing: border-box; margin:0; padding:0; }
 
-  body{
+body{
     font-family: 'Georgia', 'Times New Roman', serif;
     color: var(--text-dark);
     background: #fff;
-  }
+}
 
-  /* MENU OVERLAY */
-  .menu-overlay{
+/* MENU OVERLAY */
+.menu-overlay{
     position: fixed;
     top: 0;
     left: 0;
@@ -32,26 +32,26 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-  }
+}
 
-  .menu-content{
+.menu-content{
     text-align: center;
     font-family: 'Montserrat', sans-serif;
-  }
+}
 
-  /* linhas */
-  .menu-content::before,
-  .menu-content::after{
+/* linhas */
+.menu-content::before,
+.menu-content::after{
     content: "";
     display: block;
     width: 220px;
     height: 1px;
     background: white;
     margin: 25px auto;
-  }
+}
 
-  /* links */
-  .menu-content a{
+/* links */
+.menu-content a{
     display: block;
     color: white;
     text-decoration: none;
@@ -59,56 +59,56 @@
     margin: 28px 0;
     letter-spacing: 3px;
     transition: 0.3s;
-  }
+}
 
-  /* hover */
-  .menu-content a:hover{
+/* hover */
+.menu-content a:hover{
     color: #c49a6c;
     transform: scale(1.05);
-  }
+}
 
-  /* botão fechar */
-  .fechar{
+/* botão fechar */
+.fechar{
     position: absolute;
     top: 40px;
     right: 60px;
     color: white;
     font-size: 40px;
     cursor: pointer;
-  }
-  body.menu-aberto{
+}
+body.menu-aberto{
     overflow:hidden;
-  }
+}
 
-  /* HEADER */
-  header{
+/* HEADER */
+header{
     background: var(--navy);
     display:flex;
     align-items:center;
     justify-content:space-between;
     min-height: 100px;
     padding: 16px 60px;
-  }
-  .logo-area{
+}
+.logo-area{
     height: 100%;
     display:flex;
     align-items:center;
-  }
-  .logo{
+}
+.logo{
     height: 80px;
     width: auto;
     object-fit: contain;
     display:block;
-  }
-  .menu{
+}
+.menu{
     color: #fff;
     font-family: var(--font-montserrat);
     letter-spacing: 2px;
     cursor: pointer;
-  }
+}
 
-  /* HERO */
-  .hero{
+/* HERO */
+.hero{
     position:relative;
     min-height: 260px;
     background: linear-gradient(180deg, rgba(15,30,50,0.55), rgba(15,30,50,0.65)),
@@ -120,62 +120,62 @@
     text-align:center;
     padding: 40px 20px;
     color:#fff;
-  }
-  .hero h1{
+}
+.hero h1{
     font-family: var(--font-montserrat);
     font-size: 2.6rem;
     letter-spacing: 2px;
     font-weight: 600;
     margin-bottom: 10px;
-  }
-  .hero p{
+}
+.hero p{
     font-family: var(--font-playfair);
     font-style: italic;
     font-size: 0.95rem;
     letter-spacing: 0.5px;
-  }
+}
 
-  /* FILTERS */
-  .filters{
+/* FILTERS */
+.filters{
     display:flex;
     flex-wrap:wrap;
     justify-content: space-between;
     gap: 40px;
     padding: 28px 24px;
     font-family: var(--font-montserrat);
-  }
-  .filters h3{
+}
+.filters h3{
     font-family: var(--font-montserrat);
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 10px;
     font-weight: 700;
-  }
-  .filters ul{
+}
+.filters ul{
     list-style: none;
     font-family: var(--font-montserrat);
     font-size: 0.85rem;
     line-height: 1.9;
-  }
-  .filters label{
+}
+.filters label{
     display:flex;
     align-items:center;
     gap: 8px;
     cursor:pointer;
-  }
-  .filters input[type="checkbox"],
-  .filters input[type="radio"]{
+}
+.filters input[type="checkbox"],
+.filters input[type="radio"]{
     accent-color: var(--navy);
     width: 15px;
     height: 15px;
     cursor:pointer;
-  }
-  .filters-actions{
+}
+.filters-actions{
     display:flex;
     align-items:flex-end;
-  }
-  .clear-filters{
+}
+.clear-filters{
     font-family: var(--font-montserrat);
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -186,28 +186,31 @@
     padding: 8px 14px;
     cursor:pointer;
     transition: background 0.2s ease, color 0.2s ease;
-  }
-  .clear-filters:hover{
+}
+.clear-filters:hover{
     background: var(--navy);
     color:#fff;
-  }
+}
 
-  /* CARDS */
-  .listing{
+/* CARDS */
+.listing{
     display:flex;
     flex-direction:column;
     gap: 28px;
     padding: 10px 24px 36px;
-  }
-  .boat-card{
+}
+.boat-card{
     display:grid;
     grid-template-columns: 1fr 1fr;
-    min-height: 280px;
-  }
-  .boat-card .photo{
+    align-items: stretch;
+    overflow: hidden;
+}
+.boat-card .photo{
     background: url('img/iate.jpg') center/cover no-repeat;
-  }
-  .boat-card .info{
+    width: 100%;
+    min-height: 320px; /* Aumentado no desktop */
+}
+.boat-card .info{
     background: var(--card-gray);
     display:flex;
     flex-direction:column;
@@ -215,24 +218,24 @@
     justify-content:center;
     gap: 4px;
     text-align:center;
-    padding: 16px;
-  }
-  .boat-card .info h2{
+    padding: 12px 16px; /* Padding reduzido para a faixa cinza ficar compacta */
+}
+.boat-card .info h2{
     font-family: var(--font-montserrat);
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--navy);
     letter-spacing: 1px;
     margin-bottom: 6px;
-  }
-  .boat-card .info p{
+}
+.boat-card .info p{
     font-size: 1rem;
     color: #333;
-  }
-  .btn-conheca{
+}
+.btn-conheca{
     display: inline-block;
-    margin-top: 14px;
-    padding: 10px 28px;
+    margin-top: 10px;
+    padding: 8px 24px;
     background: var(--navy);
     color: #fff;
     text-decoration: none;
@@ -242,66 +245,66 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
     transition: opacity 0.2s ease;
-  }
-  .btn-conheca:hover{
+}
+.btn-conheca:hover{
     opacity: 0.85;
-  }
-  .empty-msg{
+}
+.empty-msg{
     font-family: Arial, Helvetica, sans-serif;
     text-align:center;
     padding: 40px 20px;
     color: #666;
-  }
+}
 
-  /* FOOTER */
-  footer{
+/* FOOTER */
+footer{
     background: #0b1d2e;
     height: 90px;
     padding: 0 60px;
     display:flex;
     align-items:center;
     gap: 60px;
-  }
-  .logo-rodape{
+}
+.logo-rodape{
     margin-bottom: 20px;
     height: 80px;
     width: auto;
     object-fit: contain;
-  }
-  .footer-contato{
+}
+.footer-contato{
     display:flex;
     flex-direction:column;
     font-family: var(--font-montserrat);
     font-size: 13px;
     color: #fff;
     line-height: 1.6;
-  }
-  .footer-titulo{
+}
+.footer-titulo{
     font-weight: 600;
     letter-spacing: 1px;
     margin-bottom: 2px;
-  }
-  .footer-separador{
+}
+.footer-separador{
     width: 1px;
     height: 50px;
     background: rgba(255,255,255,0.3);
     flex-shrink: 0;
-  }
-  .footer-icones{
+}
+.footer-icones{
     display:flex;
     align-items:center;
-  }
-  .footer-icone-link img{
+}
+.footer-icone-link img{
     width: 80px;
     height: 80px;
     object-fit: contain;
     filter: brightness(0) invert(1);
     opacity: 0.85;
     transition: opacity 0.2s;
-  }
-  .footer-icone-link:hover img{
+}
+.footer-icone-link:hover img{
     opacity: 1;
-  }
+}
 
 /* =========================================================================
    RESPONSIVO — EMBARCAÇÕES (embarcoes.html)
@@ -330,8 +333,8 @@
         padding: 10px 30px 36px;
     }
 
-    .boat-card {
-        min-height: 250px;
+    .boat-card .photo {
+        min-height: 280px;
     }
 }
 
@@ -355,12 +358,12 @@
         height: 55px;
     }
 
-    /* HERO / BANNER PRINCIPAL (AJUSTADO) */
+    /* HERO / BANNER PRINCIPAL */
     .hero {
-        min-height: auto;               /* Remove altura mínima forçada que gerava a faixa extra */
-        height: auto;                  /* Deixa o tamanho adaptar perfeitamente */
-        padding: 24px 16px;            /* Reduz os espaçamentos superiores e inferiores */
-        background-position: center;   /* Centraliza a imagem no fundo */
+        min-height: auto;
+        height: auto;
+        padding: 24px 16px;
+        background-position: center;
         background-size: cover;
     }
 
@@ -404,14 +407,15 @@
     }
 
     .boat-card .photo {
-        height: 220px;
+        height: 280px; /* Aumentado no mobile de 220px para 280px */
+        min-height: auto;
         width: 100%;
         background-size: cover;
         background-position: center;
     }
 
     .boat-card .info {
-        padding: 16px;
+        padding: 12px 16px; /* Faixa cinza enxuta */
     }
 
     .boat-card .info h2 {
@@ -425,8 +429,8 @@
     .btn-conheca {
         width: 100%;
         max-width: 260px;
-        padding: 12px 20px;
-        margin-top: 12px;
+        padding: 10px 20px;
+        margin-top: 8px;
     }
 
     /* MENU OVERLAY */
@@ -476,7 +480,7 @@
 /* ---- TELAS PEQUENAS (até 420px) ---- */
 @media (max-width: 420px) {
     .hero {
-        padding: 20px 12px;            /* Espaçamento ainda mais enxuto em telas bem pequenas */
+        padding: 20px 12px;
     }
 
     .hero h1 {
@@ -488,7 +492,7 @@
     }
 
     .boat-card .photo {
-        height: 170px;
+        height: 230px; /* Aumentado em telas pequenas de 170px para 230px */
     }
 
     .boat-card .info h2 {
