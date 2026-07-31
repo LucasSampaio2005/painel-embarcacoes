@@ -319,37 +319,37 @@ footer {
 
     /* HEADER */
     header {
-        min-height: 90px;
+        min-height: 80px;
         padding: 14px 20px;
     }
 
     .logo {
-        height: 62px;
+        height: 60px;
     }
 
     /* BANNER */
     .banner {
-        height: 220px;
+        height: 200px;
     }
 
     .banner h1 {
-        font-size: 32px;
-        letter-spacing: 3px;
+        font-size: 29px;
+        letter-spacing: 2px;
         text-align: center;
         padding: 0 16px;
     }
 
     /* CONTEÚDO E ESTRUTURA */
     .conteudo {
-        padding: 48px 0;
+        padding: 40px 0;
     }
 
     .container {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 34px;
-        padding: 0 24px;
+        gap: 30px;
+        padding: 0 20px;
     }
 
     .foto {
@@ -360,7 +360,7 @@ footer {
 
     .foto img {
         max-width: 100%;
-        width: 320px;
+        width: 300px;
         margin-top: 0;
     }
 
@@ -370,18 +370,18 @@ footer {
     }
 
     .texto h2 {
-        font-size: 26px;
+        font-size: 24px;
         line-height: 1.3;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
     }
 
     .texto span {
-        font-size: 32px;
+        font-size: 28px;
     }
 
     .texto p {
-        font-size: 15.5px;
-        margin-bottom: 14px;
+        font-size: 15px;
+        margin-bottom: 12px;
     }
 
     /* BOTÃO WHATSAPP */
@@ -393,28 +393,28 @@ footer {
 
     .botao-whatsapp {
         width: 100%;
-        max-width: 340px;
+        max-width: 320px;
         justify-content: center;
-        padding: 16px 24px;
-        font-size: 14px;
+        padding: 15px 22px;
+        font-size: 13px;
         letter-spacing: 1px;
-        margin-top: 22px;
+        margin-top: 20px;
     }
 
     .icone-whats {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
     }
 
     /* OVERLAY MENU */
     .fechar {
-        top: 20px;
-        right: 25px;
+        top: 24px;
+        right: 28px;
         font-size: 32px;
     }
 
     .menu-content a {
-        font-size: 22px;
+        font-size: 24px;
         margin: 20px 0;
     }
 
@@ -422,8 +422,8 @@ footer {
     footer {
         flex-direction: column;
         height: auto;
-        padding: 24px 20px;
-        gap: 14px;
+        padding: 20px 16px;
+        gap: 16px;
         text-align: center;
     }
 
@@ -437,7 +437,8 @@ footer {
     }
 
     .footer-separador {
-        display: none;
+        width: 60%;
+        height: 1px;
     }
 
     .footer-icones {
@@ -445,31 +446,41 @@ footer {
     }
 
     .footer-icone-link img {
-        width: 44px;
-        height: 44px;
+        width: 56px;
+        height: 56px;
     }
 }
 
-/* ---- TELAS PEQUENAS (até 420px) ---- */
-@media (max-width: 420px) {
+/* ---- TELAS PEQUENAS (até 480px) ---- */
+@media (max-width: 480px) {
     .banner h1 {
-        font-size: 26px;
+        font-size: 24px;
+        letter-spacing: 1px;
     }
 
     .texto h2 {
-        font-size: 21px;
+        font-size: 20px;
     }
 
     .texto span {
-        font-size: 25px;
+        font-size: 24px;
+    }
+
+    .texto p {
+        font-size: 14px;
     }
 
     .foto img {
-        width: 260px;
+        width: 240px;
     }
 
     .botao-whatsapp {
         font-size: 12px;
-        padding: 14px 18px;
+        padding: 13px 18px;
+    }
+
+    .footer-icone-link img {
+        width: 44px;
+        height: 44px;
     }
 }
