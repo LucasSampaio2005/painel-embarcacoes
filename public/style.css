@@ -20,11 +20,20 @@ header {
     width: auto;
     object-fit: contain;
     display: block;
+    cursor: pointer;
 }
+
 .logo-area {
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+/* Estilo para o link em volta da logo */
+.logo-area a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 }
 
 .menu {
@@ -94,7 +103,6 @@ header {
     cursor: pointer;
 }
 
-
 /* BANNER */
 .banner {
     width: 100%;
@@ -114,7 +122,7 @@ header {
 }
 
 .banner h1 {
-   position:relative;
+    position:relative;
     color:white;
     font-size:55px;
     font-weight:200;
@@ -161,7 +169,6 @@ header {
     color: #2c3e50;
     font-size: 40px;
     line-height: 1.2;
-    
 }
 
 .texto span {
@@ -269,6 +276,7 @@ footer {
 .footer-icone-link:hover img {
     opacity: 1;
 }
+
 /* =========================================================================
    RESPONSIVO — PÉRCIO BERALDO (percio.html)
    ========================================================================= */
