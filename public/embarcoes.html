@@ -11,7 +11,6 @@
 </head>
 <body>
 
-  <!-- MENU OVERLAY -->
   <div id="menu-overlay" class="menu-overlay">
     <div class="menu-content">
       <div class="fechar" onclick="fecharMenu()">&#10005;</div>
@@ -23,7 +22,9 @@
 
   <header>
     <div class="logo-area">
-      <img src="img/logo.png" class="logo" alt="Logo da empresa">
+      <a href="index.html">
+        <img src="img/logo.png" class="logo" alt="Logo da empresa">
+      </a>
     </div>
     <div class="menu" onclick="abrirMenu()">MENU ☰</div>
   </header>
@@ -37,8 +38,7 @@
     <div>
       <h3>Condição</h3>
       <ul id="filtro-condicao">
-        <!-- Gerado via JS a partir de CONDICOES -->
-      </ul>
+        </ul>
     </div>
     <div class="filters-actions">
       <button class="clear-filters" id="btn-limpar">Limpar filtros</button>
@@ -46,8 +46,7 @@
   </section>
 
   <section class="listing" id="boat-list">
-    <!-- Cards gerados dinamicamente a partir da API /api/boats, filtrados conforme os checkboxes acima -->
-  </section>
+    </section>
 
   <p class="empty-msg" id="empty-msg" style="display:none;">Nenhuma embarcação encontrada para os filtros selecionados.</p>
 
@@ -81,8 +80,6 @@
     ];
 
     // ---------- DADOS DAS EMBARCAÇÕES ----------
-    // Os barcos agora vêm da API (/api/boats), servida pelo backend Express + SQLite.
-    // O painel admin.html grava direto no banco, sem precisar mexer em arquivo nenhum.
     let boats = [];
 
     async function carregarBarcos(){
