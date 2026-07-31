@@ -2,9 +2,17 @@
     box-sizing: border-box;
 }
 
+html {
+    background: #0b1d2e; /* evita fundo branco aparecendo no "bounce" de rolagem do iOS */
+}
+
 html, body {
     overflow-x: hidden;
     width: 100%;
+}
+
+body {
+    min-height: 100vh;
 }
 
 img {
