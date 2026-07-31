@@ -7,8 +7,5 @@
   { "modelo": "SCHAEFER 510GT", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/510.png", "condicao": "novo", "pdf": "510GT.pdf" },
   { "modelo": "SCHAEFER 26M", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/26M.png", "condicao": "novo", "pdf": "26M.pdf" },
   { "modelo": "SCHAEFER 770", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/770.png", "condicao": "novo", "pdf": "Schaefer770.pdf" },
-  { "modelo": "SCHAEFER 450", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/450.png", "condicao": "novo", "pdf": "450.pdf" },
-  { "modelo": "MODELO", "ano": "2023", "motorizacao": "2x 435HP", "localizacao": "Florianópolis - SC", "foto": "img/iate.jpg", "condicao": "seminovo", "pdf": "" },
-  { "modelo": "MODELO", "ano": "2023", "motorizacao": "2x 435HP", "localizacao": "Florianópolis - SC", "foto": "img/iate.jpg", "condicao": "seminovo", "pdf": "" },
-  { "modelo": "MODELO", "ano": "2023", "motorizacao": "2x 435HP", "localizacao": "Florianópolis - SC", "foto": "img/iate.jpg", "condicao": "seminovo", "pdf": "" }
+  { "modelo": "SCHAEFER 450", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/450.png", "condicao": "novo", "pdf": "450.pdf" }
 ]
