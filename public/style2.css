@@ -474,6 +474,15 @@ footer {
 
 /* ---- TELAS PEQUENAS (até 480px) ---- */
 @media (max-width: 480px) {
+    .fechar {
+        top: 16px;
+        right: 20px;
+        font-size: 28px;
+    }
+    .menu-content a {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
     .banner h1 {
         font-size: 24px;
         letter-spacing: 1px;
