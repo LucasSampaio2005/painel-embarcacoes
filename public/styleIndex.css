@@ -64,7 +64,7 @@ body {
 ===================== */
 .menu {
     position: absolute;
-    top: -10px;
+    top: 60px;
     right: 40px;
     z-index: 10;
     background: none;
@@ -557,7 +557,6 @@ footer {
     height: 50px;
     background: rgba(255, 255, 255, 0.3);
     flex-shrink: 0;
-    gap:60px;
 }
 
 .footer-icones {
@@ -587,20 +586,25 @@ footer {
     .banner {
         height: 600px;
     }
+
     .logo-texto {
         width: 85%;
         font-size: 17px;
     }
+
     .carrossel-container {
         width: 620px;
     }
+
     .card {
         min-width: 300px;
     }
+
     .percio-img img {
         width: 300px;
         height: 400px;
     }
+
     .percio-container {
         gap: 36px;
     }
@@ -609,57 +613,56 @@ footer {
 /* ---- MOBILE (até 768px) ---- */
 @media (max-width: 768px) {
 
-    /* BANNER — reduz altura e reposiciona a onda para acompanhar o banner
-       (antes ficava presa a 290px do topo, cobrindo o conteúdo quando o
-       banner encolhe) */
+    /* BANNER — altura reduzida e espaçamento superior ajustado */
     .banner {
-        height: 480px;
-        padding: 20px;
+        height: 420px;
+        padding: 0px 16px;
     }
+
+    /* LOGO E TEXTOS — subiram mais um pouco */
     .logo-area {
-        top: -35px;
+        top: -8px;
         left: 16px;
         width: calc(100% - 32px);
     }
+
     .logoprinc {
-        width: 150px;
+        width: 130px;
     }
+
     .logo-titulo {
-        font-size: 24px;
+        font-size: 22px;
+        margin-top: -10px;
     }
+
     .logo-texto {
         width: 100%;
-        font-size: 14px;
-        line-height: 1.5;
+        font-size: 13.5px;
+        line-height: 1.4;
+        margin-top: 4px;
     }
+
+    /* MENU BOTÃO — rebaixado para alinhar perfeitamente com o topo da logo */
     .menu {
-        top: 10px;
+        top: 28px;
         right: 16px;
     }
+
     .menu-texto {
-        display: none; /* mantém só o ícone, economiza espaço */
+        display: none;
     }
 
-    /* MENU OVERLAY — mesmos tamanhos usados nas páginas Pércio e Embarcações */
-    .fechar {
-        top: 24px;
-        right: 28px;
-        font-size: 32px;
-    }
-    .menu-content a {
-        font-size: 24px;
-        margin: 20px 0;
-    }
-
+    /* ONDA — acompanha a base do banner */
     .onda {
         top: auto;
-        bottom: -130px; /* acompanha a base do banner em qualquer altura */
+        bottom: -100px;
     }
 
     .embarcacoes {
         padding-top: 40px;
         padding-bottom: 40px;
     }
+
     .titulo-embarcacoes,
     .titulo-entregues {
         font-size: 24px;
@@ -667,27 +670,30 @@ footer {
         padding-left: 16px;
         padding-right: 16px;
     }
+
     .linha-embarcacoes {
         width: 160px;
     }
 
-    /* CARROSSEL — a "seta" ficava em cima da foto porque o card ocupava
-       a largura toda; agora sobra espaço nas laterais pras setas, e elas
-       ganham um fundo circular pra não parecer que estão "no meio" da foto */
+    /* CARROSSEL */
     .carrossel {
         margin-top: 40px;
     }
+
     .carrossel-container {
         width: 100%;
         max-width: 100%;
         padding: 0 42px;
     }
+
     .card {
         min-width: 100%;
     }
+
     .card img {
         height: 200px;
     }
+
     .seta {
         font-size: 20px;
         width: 34px;
@@ -699,10 +705,12 @@ footer {
         color: #fff;
         border-radius: 50%;
     }
+
     .seta.esquerda,
     .seta.esquerda-e {
         left: 4px;
     }
+
     .seta.direita,
     .seta.direita-e {
         right: 4px;
@@ -712,67 +720,80 @@ footer {
         margin-top: 40px;
         margin-bottom: 30px;
     }
+
     .botao-catalogo {
         padding: 14px 30px;
         font-size: 16px;
     }
 
-    /* SEÇÃO PÉRCIO — empilha foto em cima do texto em vez de lado a lado */
+    /* SEÇÃO PÉRCIO */
     .percio {
         padding: 30px 20px 40px;
     }
+
     .percio-container {
         flex-direction: column;
         align-items: center;
         text-align: center;
         gap: 24px;
     }
+
     .percio-img img {
         width: 220px;
         height: 280px;
     }
+
     .percio-texto h2 {
         font-size: 20px;
     }
+
     .percio-texto h2 .destaque {
         font-size: 24px;
     }
+
     .percio-texto p {
         font-size: 14px;
     }
 
-    /* EMBARCAÇÕES ENTREGUES — mesmo ajuste do carrossel principal */
+    /* EMBARCAÇÕES ENTREGUES */
     .titulo-entregues {
         padding-top: 40px;
     }
+
     .card-entregue {
         min-width: 100%;
     }
+
     .card-entregue img {
         height: 190px;
     }
 
-    /* RODAPÉ — empilha em vez de espremer tudo numa linha só */
+    /* RODAPÉ */
     footer {
         flex-direction: column;
         height: auto;
         padding: 24px 20px;
-        gap: 14px;
+        gap: 16px;
         text-align: center;
     }
+
     .logo-rodape {
         margin-bottom: 0;
         height: 60px;
     }
+
     .footer-contato {
         align-items: center;
     }
+
     .footer-separador {
         display: none;
     }
+
     .footer-icones {
         gap: 20px;
     }
+
     .footer-icone-link img {
         width: 44px;
         height: 44px;
@@ -781,29 +802,30 @@ footer {
 
 /* ---- TELAS PEQUENAS (até 420px) ---- */
 @media (max-width: 420px) {
-    .fechar {
-        top: 16px;
-        right: 20px;
-        font-size: 28px;
-    }
-    .menu-content a {
-        font-size: 20px;
-        letter-spacing: 2px;
-    }
     .banner {
         height: 440px;
     }
+
     .logo-titulo {
         font-size: 20px;
     }
+
     .whatsapp span {
         display: none;
     }
+
     .whatsapp {
         padding: 12px;
         border-radius: 50%;
     }
+
     .whatsapp .icone {
         border: none;
+        width: 46px;
+        height: 46px;
+    }
+
+    .whatsapp .icone img {
+        width: 28px;
     }
 }
