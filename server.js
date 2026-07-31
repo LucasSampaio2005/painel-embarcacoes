@@ -60,6 +60,47 @@ const pastaPdf = path.join(__dirname, "public", "pdfs");
 fs.mkdirSync(pastaImg, { recursive: true });
 fs.mkdirSync(pastaPdf, { recursive: true });
 
+/* =========================================================================
+   REPARO DE PDFs COM CAMINHO ANTIGO
+   Embarcações que vieram do antigo boats.json guardaram só o nome do
+   arquivo (ex: "v33.pdf"), de uma época em que o PDF ficava na raiz do
+   site. Hoje os PDFs enviados pelo painel ficam em public/pdfs com um
+   prefixo de data/hora (ex: "pdfs/1785201853224-v33.pdf"). Esta rotina
+   roda a cada início do servidor e conserta esses registros antigos,
+   casando o nome salvo com o arquivo real mais parecido na pasta pdfs.
+   Não faz nada com registros que já estão corretos ou vazios.
+   ========================================================================= */
+function repararPdfsAntigos() {
+  let arquivosPdf;
+  try {
+    arquivosPdf = fs.readdirSync(pastaPdf);
+  } catch {
+    return;
+  }
+  const boatsComPdf = db
+    .prepare("SELECT id, pdf FROM boats WHERE pdf IS NOT NULL AND pdf != ''")
+    .all();
+  const atualizar = db.prepare("UPDATE boats SET pdf = ? WHERE id = ?");
+
+  boatsComPdf.forEach((b) => {
+    if (b.pdf.startsWith("pdfs/")) return; // já está no formato certo
+
+    const nomeAntigo = b.pdf.toLowerCase();
+    const encontrado = arquivosPdf.find((f) => {
+      const fLower = f.toLowerCase();
+      return fLower === nomeAntigo || fLower.endsWith("-" + nomeAntigo);
+    });
+
+    if (encontrado) {
+      atualizar.run("pdfs/" + encontrado, b.id);
+      console.log(`PDF corrigido: embarcação #${b.id} -> pdfs/${encontrado}`);
+    } else {
+      console.log(`Aviso: não achei arquivo correspondente a "${b.pdf}" (embarcação #${b.id})`);
+    }
+  });
+}
+repararPdfsAntigos();
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === "pdf") cb(null, pastaPdf);
