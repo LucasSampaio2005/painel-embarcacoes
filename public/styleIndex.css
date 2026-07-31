@@ -652,6 +652,18 @@ footer {
         display: none;
     }
 
+    /* MENU OVERLAY — mesmos tamanhos usados nas páginas Pércio e Embarcações */
+    .fechar {
+        top: 24px;
+        right: 28px;
+        font-size: 32px;
+    }
+
+    .menu-content a {
+        font-size: 24px;
+        margin: 20px 0;
+    }
+
     /* ONDA — acompanha a base do banner */
     .onda {
         top: auto;
@@ -802,6 +814,17 @@ footer {
 
 /* ---- TELAS PEQUENAS (até 420px) ---- */
 @media (max-width: 420px) {
+    .fechar {
+        top: 16px;
+        right: 20px;
+        font-size: 28px;
+    }
+
+    .menu-content a {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+
     .banner {
         height: 440px;
     }
