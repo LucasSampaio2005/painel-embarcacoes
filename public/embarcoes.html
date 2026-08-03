@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Embarcações</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styleEmbarcacao.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embarcações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styleEmbarcacao.css">
 </head>
+
 <body>
 
   <div id="menu-overlay" class="menu-overlay">
@@ -37,27 +39,33 @@
   <section class="filters">
     <div>
       <h3>Condição</h3>
-      <ul id="filtro-condicao">
-        </ul>
+      <ul id="filtro-condicao"></ul>
     </div>
     <div class="filters-actions">
       <button class="clear-filters" id="btn-limpar">Limpar filtros</button>
     </div>
   </section>
 
-  <section class="listing" id="boat-list">
-    </section>
+  <section class="listing" id="boat-list"></section>
 
   <p class="empty-msg" id="empty-msg" style="display:none;">Nenhuma embarcação encontrada para os filtros selecionados.</p>
 
+  <div id="modal-detalhes" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <button class="modal-fechar" onclick="fecharModal()">&times;</button>
+      <div class="modal-body" id="modal-body-content">
+        </div>
+    </div>
+  </div>
+
   <footer>
-    <img src="img/logo.png" class="logo-rodape">
+    <img src="img/logo.png" class="logo-rodape" alt="Logo Rodapé">
 
     <div class="footer-icones">
-      <a href="https://www.instagram.com/percio.schaeferyachts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" class="footer-icone-link">
+      <a href="https://www.instagram.com/percio.schaeferyachts" target="_blank" rel="noopener" class="footer-icone-link">
         <img src="img/insta.png" alt="Instagram">
       </a>
-      <a href="https://wa.me/5548999950413" class="footer-icone-link">
+      <a href="https://wa.me/5548999950413" class="footer-icone-link" target="_blank" rel="noopener">
         <img src="img/whats.png" alt="WhatsApp">
       </a>
     </div>
@@ -75,14 +83,13 @@
   <script>
     // ---------- CONFIGURAÇÃO DOS FILTROS ----------
     const CONDICOES = [
-      { valor: "novo",     label: "Novos" },
+      { valor: "novo", label: "Novos" },
       { valor: "seminovo", label: "Seminovos" },
     ];
 
-    // ---------- DADOS DAS EMBARCAÇÕES ----------
     let boats = [];
 
-    async function carregarBarcos(){
+    async function carregarBarcos() {
       try {
         const resposta = await fetch('/api/boats', { cache: 'no-store' });
         boats = await resposta.json();
@@ -93,8 +100,7 @@
       aplicarFiltros();
     }
 
-    // ---------- RENDERIZAÇÃO DOS FILTROS ----------
-    function renderFiltroRadio(container, opcoes, nomeGrupo){
+    function renderFiltroRadio(container, opcoes, nomeGrupo) {
       container.innerHTML = opcoes.map(op => `
         <li>
           <label>
@@ -110,33 +116,116 @@
     const list = document.getElementById('boat-list');
     const emptyMsg = document.getElementById('empty-msg');
 
-    function renderBoats(items){
+    function renderBoats(items) {
       list.innerHTML = '';
       emptyMsg.style.display = items.length ? 'none' : 'block';
+
       items.forEach(b => {
         const card = document.createElement('div');
         card.className = 'boat-card';
+
+        // Verifica se tem PDF preenchido
+        const temPdf = Boolean(b.pdf && b.pdf.trim() !== '');
+        
+        // Define se o botão abre o PDF diretamente ou abre o modal marketplace
+        const btnAction = temPdf
+          ? `<a href="${b.pdf}" target="_blank" rel="noopener" class="btn-conheca">Conheça mais</a>`
+          : `<button onclick='abrirModalDetalhes(${JSON.stringify(b)})' class="btn-conheca">Conheça mais</button>`;
+
+        // O card exibe apenas: Foto, Tag (Novo/Seminovo), Modelo, Descrição e o Botão
         card.innerHTML = `
-          <div class="photo" style="background-image:url('${b.foto}')"></div>
+          <div class="photo" style="background-image:url('${b.foto_principal || b.foto}')"></div>
           <div class="info">
+            <span class="badge-condicao">${b.condicao === 'novo' ? 'Novo' : 'Seminovo'}</span>
             <h2>${b.modelo}</h2>
-            <p>${b.ano}</p>
-            <p>${b.motorizacao}</p>
-            <p>${b.localizacao}</p>
-            ${b.pdf ? `<a href="${b.pdf}" target="_blank" rel="noopener" class="btn-conheca">Conheça mais</a>` : ''}
+            <p class="descricao-card">${b.descricao || ''}</p>
+            ${btnAction}
           </div>
         `;
         list.appendChild(card);
       });
     }
 
+    // ---------- MODAL MARKETPLACE (Opção Sem PDF) ----------
+    function abrirModalDetalhes(barco) {
+      const modal = document.getElementById('modal-detalhes');
+      const container = document.getElementById('modal-body-content');
+
+      const fotoPrincipal = barco.foto_principal || barco.foto || '';
+      const fotosGaleria = barco.fotos_galeria || [];
+      const todasFotos = [fotoPrincipal, ...fotosGaleria].filter(f => f);
+
+      // Gera as miniaturas das fotos
+      const thumbsHTML = todasFotos.map((foto, index) => `
+        <img src="${foto}" class="thumb-img ${index === 0 ? 'active' : ''}" onclick="trocarFotoDestaque('${foto}', this)" alt="Miniatura ${index + 1}">
+      `).join('');
+
+      container.innerHTML = `
+        <div class="marketplace-container">
+          <div class="galeria-area">
+            <div class="foto-destaque-wrapper">
+              <img id="foto-destaque-main" src="${fotoPrincipal}" alt="${barco.modelo}">
+            </div>
+            <div class="thumbs-wrapper">
+              ${thumbsHTML}
+            </div>
+          </div>
+
+          <div class="info-area">
+            <span class="badge-condicao">${barco.condicao === 'novo' ? 'Novo' : 'Seminovo'}</span>
+            <h2>${barco.modelo}</h2>
+            <p class="descricao-detalhada">${barco.descricao || ''}</p>
+
+            <div class="divisor-modal"></div>
+
+            <h3>Ficha Técnica</h3>
+            <ul class="especificacoes-grid">
+              <li><span>Marca:</span> <strong>${barco.marca || '-'}</strong></li>
+              <li><span>Ano:</span> <strong>${barco.ano || '-'}</strong></li>
+              <li><span>Comprimento:</span> <strong>${barco.comprimento ? barco.comprimento + ' pés' : '-'}</strong></li>
+              <li><span>Casco:</span> <strong>${barco.casco || '-'}</strong></li>
+              <li><span>Horas de Motor:</span> <strong>${barco.horas_motor || '-'}</strong></li>
+              <li><span>Cabines:</span> <strong>${barco.cabines || '-'}</strong></li>
+              <li><span>Combustível:</span> <strong>${barco.combustivel || '-'}</strong></li>
+              <li><span>Banheiros:</span> <strong>${barco.banheiros || '-'}</strong></li>
+            </ul>
+
+            <a href="https://wa.me/5548999950413?text=Olá,%20tenho%20interesse%20na%20embarcação%20${encodeURIComponent(barco.modelo)}" 
+               target="_blank" rel="noopener" class="btn-whatsapp">Tenho interesse no WhatsApp</a>
+          </div>
+        </div>
+      `;
+
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Impede o scroll do fundo
+    }
+
+    function trocarFotoDestaque(url, el) {
+      document.getElementById('foto-destaque-main').src = url;
+      document.querySelectorAll('.thumb-img').forEach(img => img.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function fecharModal() {
+      document.getElementById('modal-detalhes').style.display = 'none';
+      document.body.style.overflow = 'auto'; // Libera o scroll do fundo
+    }
+
+    // Fecha o modal se clicar fora do conteúdo
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal-detalhes');
+      if (event.target === modal) {
+        fecharModal();
+      }
+    };
+
     // ---------- LÓGICA DE FILTRAGEM ----------
-    function getSelecionados(nomeGrupo){
+    function getSelecionados(nomeGrupo) {
       return Array.from(document.querySelectorAll(`input[name="${nomeGrupo}"]:checked`))
                   .map(input => input.value);
     }
 
-    function aplicarFiltros(){
+    function aplicarFiltros() {
       const condicaoSelecionada = getSelecionados('condicao');
 
       const filtrados = boats.filter(b => {
@@ -150,7 +239,7 @@
     document.getElementById('filtro-condicao').addEventListener('change', aplicarFiltros);
 
     document.getElementById('btn-limpar').addEventListener('click', () => {
-      document.querySelectorAll('.filters input[type="checkbox"], .filters input[type="radio"]').forEach(cb => cb.checked = false);
+      document.querySelectorAll('.filters input[type="radio"]').forEach(cb => cb.checked = false);
       aplicarFiltros();
     });
 

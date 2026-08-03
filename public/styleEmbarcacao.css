@@ -219,6 +219,7 @@ header{
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
     overflow: hidden;
+    border-radius: 6px;
 }
 .boat-card .photo{
     background: url('img/iate.jpg') center/cover no-repeat;
@@ -229,11 +230,21 @@ header{
     background: var(--card-gray);
     display:flex;
     flex-direction:column;
-    align-items:center;
+    align-items:flex-start;
     justify-content:center;
-    gap: 4px;
-    text-align:center;
-    padding: 12px 16px;
+    gap: 8px;
+    text-align:left;
+    padding: 24px 30px;
+}
+.badge-condicao{
+    background-color: var(--navy);
+    color: #fff;
+    font-size: 0.7rem;
+    font-family: var(--font-montserrat);
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
 }
 .boat-card .info h2{
     font-family: var(--font-montserrat);
@@ -241,25 +252,35 @@ header{
     font-weight: 700;
     color: var(--navy);
     letter-spacing: 1px;
-    margin-bottom: 6px;
+    margin-top: 4px;
 }
-.boat-card .info p{
-    font-size: 1rem;
-    color: #333;
+.descricao-card{
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-family: var(--font-montserrat);
 }
 .btn-conheca{
     display: inline-block;
-    margin-top: 10px;
-    padding: 8px 24px;
+    margin-top: 8px;
+    padding: 10px 24px;
     background: var(--navy);
     color: #fff;
     text-decoration: none;
+    border: none;
+    cursor: pointer;
     font-family: var(--font-montserrat);
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     transition: opacity 0.2s ease;
+    border-radius: 4px;
 }
 .btn-conheca:hover{
     opacity: 0.85;
@@ -269,6 +290,171 @@ header{
     text-align:center;
     padding: 40px 20px;
     color: #666;
+}
+
+/* =========================================================
+   MODAL MARKETPLACE (Opção sem PDF)
+   ========================================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(11, 29, 46, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 950px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+}
+
+.modal-fechar {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #333;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.modal-fechar:hover {
+    color: #b3402f;
+}
+
+.marketplace-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.galeria-area {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.foto-destaque-wrapper {
+    width: 100%;
+    height: 320px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #eee;
+}
+
+.foto-destaque-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbs-wrapper {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.thumb-img {
+    width: 70px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.6;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.thumb-img.active,
+.thumb-img:hover {
+    opacity: 1;
+    border-color: var(--navy);
+}
+
+.info-area h2 {
+    font-family: var(--font-playfair);
+    font-size: 1.8rem;
+    color: var(--navy);
+    margin: 10px 0;
+}
+
+.descricao-detalhada {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    font-family: var(--font-montserrat);
+}
+
+.divisor-modal {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 20px 0;
+}
+
+.info-area h3 {
+    font-size: 1.1rem;
+    font-family: var(--font-montserrat);
+    color: var(--navy);
+    margin-bottom: 12px;
+}
+
+.especificacoes-grid {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 15px;
+    margin-bottom: 25px;
+    font-family: var(--font-montserrat);
+}
+
+.especificacoes-grid li {
+    font-size: 0.85rem;
+    color: #444;
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.especificacoes-grid li span {
+    color: #777;
+}
+
+.btn-whatsapp {
+    display: block;
+    text-align: center;
+    background-color: #25D366;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-family: var(--font-montserrat);
+    transition: background-color 0.2s;
+}
+
+.btn-whatsapp:hover {
+    background-color: #1eb855;
 }
 
 /* FOOTER */
@@ -397,7 +583,6 @@ footer{
         gap: 20px;
     }
 
-    /* card empilha foto em cima e info embaixo */
     .boat-card{
         grid-template-columns: 1fr;
     }
@@ -411,7 +596,18 @@ footer{
         font-size: 1.3rem;
     }
 
-    /* footer empilhado */
+    /* MODAL MOBILE */
+    .marketplace-container {
+        grid-template-columns: 1fr;
+    }
+    .foto-destaque-wrapper {
+        height: 240px;
+    }
+    .especificacoes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* FOOTER EMPILHADO */
     footer{
         height: auto;
         flex-direction: column;
@@ -460,9 +656,6 @@ footer{
     }
     .boat-card .info h2{
         font-size: 1.15rem;
-    }
-    .boat-card .info p{
-        font-size: 0.9rem;
     }
     .btn-conheca{
         padding: 8px 18px;

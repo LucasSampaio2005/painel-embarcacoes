@@ -15,32 +15,86 @@ const PORT = process.env.PORT || 3000;
    ========================================================================= */
 const db = new DatabaseSync(path.join(__dirname, "boats.db"));
 
+// Cria a tabela com todas as novas colunas
 db.prepare(`
 CREATE TABLE IF NOT EXISTS boats (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   modelo TEXT,
-  ano TEXT,
-  motorizacao TEXT,
-  localizacao TEXT,
-  foto TEXT,
   condicao TEXT,
-  pdf TEXT
+  descricao TEXT,
+  foto_principal TEXT,
+  pdf TEXT,
+  marca TEXT,
+  ano TEXT,
+  comprimento TEXT,
+  casco TEXT,
+  horas_motor TEXT,
+  cabines TEXT,
+  combustivel TEXT,
+  banheiros TEXT,
+  fotos_galeria TEXT
 )`).run();
 
-// Semeia o banco com os barcos que já existiam no boats.json, só na primeira vez
+// Garante compatibilidade caso o banco já existisse sem as novas colunas
+const colunasExistentes = db.prepare("PRAGMA table_info(boats)").all().map(c => c.name);
+const novasColunas = [
+  { nome: "descricao", tipo: "TEXT" },
+  { nome: "foto_principal", tipo: "TEXT" },
+  { nome: "marca", tipo: "TEXT" },
+  { nome: "comprimento", tipo: "TEXT" },
+  { nome: "casco", tipo: "TEXT" },
+  { nome: "horas_motor", tipo: "TEXT" },
+  { nome: "cabines", tipo: "TEXT" },
+  { nome: "combustivel", tipo: "TEXT" },
+  { nome: "banheiros", tipo: "TEXT" },
+  { nome: "fotos_galeria", tipo: "TEXT" }
+];
+
+novasColunas.forEach(col => {
+  if (!colunasExistentes.includes(col.nome)) {
+    try {
+      db.prepare(`ALTER TABLE boats ADD COLUMN ${col.nome} ${col.tipo}`).run();
+    } catch (e) {
+      // Coluna já existente ou ignorada
+    }
+  }
+});
+
+// Semeia o banco com os barcos do seed-boats.json na primeira execução
 const totalBarcos = db.prepare("SELECT COUNT(*) AS n FROM boats").get().n;
 if (totalBarcos === 0) {
   const seedPath = path.join(__dirname, "seed-boats.json");
   if (fs.existsSync(seedPath)) {
     const seed = JSON.parse(fs.readFileSync(seedPath, "utf-8"));
     const inserir = db.prepare(`
-      INSERT INTO boats (modelo, ano, motorizacao, localizacao, foto, condicao, pdf)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO boats (
+        modelo, condicao, descricao, foto_principal, pdf, 
+        marca, ano, comprimento, casco, horas_motor, 
+        cabines, combustivel, banheiros, fotos_galeria
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     db.exec("BEGIN");
-    seed.forEach((b) =>
-      inserir.run(b.modelo, b.ano, b.motorizacao, b.localizacao, b.foto, b.condicao, b.pdf)
-    );
+    seed.forEach((b) => {
+      const fotoCapa = b.foto_principal || b.foto || "";
+      const galeriaJson = Array.isArray(b.fotos_galeria) ? JSON.stringify(b.fotos_galeria) : "[]";
+      inserir.run(
+        b.modelo || "",
+        b.condicao || "novo",
+        b.descricao || "",
+        fotoCapa,
+        b.pdf || "",
+        b.marca || "",
+        b.ano || "",
+        b.comprimento || "",
+        b.casco || "",
+        b.horas_motor || "",
+        b.cabines || "",
+        b.combustivel || "",
+        b.banheiros || "",
+        galeriaJson
+      );
+    });
     db.exec("COMMIT");
     console.log(`Banco criado e populado com ${seed.length} embarcações do seed-boats.json`);
   }
@@ -62,13 +116,6 @@ fs.mkdirSync(pastaPdf, { recursive: true });
 
 /* =========================================================================
    REPARO DE PDFs COM CAMINHO ANTIGO
-   Embarcações que vieram do antigo boats.json guardaram só o nome do
-   arquivo (ex: "v33.pdf"), de uma época em que o PDF ficava na raiz do
-   site. Hoje os PDFs enviados pelo painel ficam em public/pdfs com um
-   prefixo de data/hora (ex: "pdfs/1785201853224-v33.pdf"). Esta rotina
-   roda a cada início do servidor e conserta esses registros antigos,
-   casando o nome salvo com o arquivo real mais parecido na pasta pdfs.
-   Não faz nada com registros que já estão corretos ou vazios.
    ========================================================================= */
 function repararPdfsAntigos() {
   let arquivosPdf;
@@ -83,7 +130,7 @@ function repararPdfsAntigos() {
   const atualizar = db.prepare("UPDATE boats SET pdf = ? WHERE id = ?");
 
   boatsComPdf.forEach((b) => {
-    if (b.pdf.startsWith("pdfs/")) return; // já está no formato certo
+    if (b.pdf.startsWith("pdfs/")) return;
 
     const nomeAntigo = b.pdf.toLowerCase();
     const encontrado = arquivosPdf.find((f) => {
@@ -113,6 +160,14 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+// Aceita Foto Principal, PDF e múltiplas Fotos da Galeria
+const uploadCampos = upload.fields([
+  { name: "foto_principal", maxCount: 1 },
+  { name: "foto", maxCount: 1 }, // suporte para legado
+  { name: "pdf", maxCount: 1 },
+  { name: "fotos_galeria", maxCount: 10 }
+]);
+
 /* =========================================================================
    MIDDLEWARES
    ========================================================================= */
@@ -121,7 +176,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const emProducao = process.env.NODE_ENV === "production";
-if (emProducao) app.set("trust proxy", 1); // necessário no Railway para cookies seguros funcionarem
+if (emProducao) app.set("trust proxy", 1);
 
 app.use(
   session({
@@ -130,7 +185,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: emProducao, // exige HTTPS em produção; localhost continua funcionando em HTTP
+      secure: emProducao,
       maxAge: 1000 * 60 * 60 * 8, // 8 horas
     },
   })
@@ -173,7 +228,6 @@ app.get("/api/sessao", (req, res) => {
 
 /* =========================================================================
    PÁGINA ADMIN PROTEGIDA
-   (precisa vir ANTES do express.static para o middleware de auth valer)
    ========================================================================= */
 app.get(["/admin", "/admin.html"], paginaAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
@@ -190,53 +244,139 @@ app.get("/login", (req, res) => {
 // Lista pública (usada pelo site: index.html e embarcoes.html)
 app.get("/api/boats", (req, res) => {
   const boats = db.prepare("SELECT * FROM boats ORDER BY id DESC").all();
-  res.json(boats);
+  
+  // Converte a string de fotos_galeria de volta para Array JSON
+  const formatados = boats.map(b => {
+    let galeria = [];
+    try {
+      galeria = b.fotos_galeria ? JSON.parse(b.fotos_galeria) : [];
+    } catch {
+      galeria = [];
+    }
+    return {
+      ...b,
+      foto_principal: b.foto_principal || b.foto || "",
+      fotos_galeria: galeria
+    };
+  });
+
+  res.json(formatados);
 });
 
-// Criar embarcação (protegido) — aceita upload de foto e pdf
-app.post(
-  "/api/boats",
-  apiAuth,
-  upload.fields([{ name: "foto", maxCount: 1 }, { name: "pdf", maxCount: 1 }]),
-  (req, res) => {
-    const { modelo, ano, motorizacao, localizacao, condicao } = req.body;
-    const foto = req.files?.foto?.[0] ? "img/" + req.files.foto[0].filename : req.body.fotoUrl || "";
-    const pdf = req.files?.pdf?.[0] ? "pdfs/" + req.files.pdf[0].filename : "";
+// Criar embarcação (protegido)
+app.post("/api/boats", apiAuth, uploadCampos, (req, res) => {
+  const {
+    modelo, condicao, descricao, tipo_apresentacao,
+    marca, ano, comprimento, casco, horas_motor,
+    cabines, combustivel, banheiros
+  } = req.body;
 
-    const resultado = db
-      .prepare(
-        `INSERT INTO boats (modelo, ano, motorizacao, localizacao, foto, condicao, pdf)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`
-      )
-      .run(modelo, ano, motorizacao, localizacao, foto, condicao, pdf);
+  const arqFoto = req.files?.foto_principal?.[0] || req.files?.foto?.[0];
+  const foto_principal = arqFoto ? "img/" + arqFoto.filename : "";
 
-    const novo = db.prepare("SELECT * FROM boats WHERE id = ?").get(resultado.lastInsertRowid);
-    res.json(novo);
+  // Se o usuário selecionou PDF como tipo de apresentação
+  const pdf = tipo_apresentacao === "pdf" && req.files?.pdf?.[0]
+    ? "pdfs/" + req.files.pdf[0].filename
+    : (tipo_apresentacao === "pdf" ? req.body.pdf || "" : "");
+
+  // Múltiplas fotos para a galeria
+  let fotos_galeria = [];
+  if (req.files?.fotos_galeria) {
+    fotos_galeria = req.files.fotos_galeria.map(f => "img/" + f.filename);
   }
-);
+
+  const resultado = db
+    .prepare(
+      `INSERT INTO boats (
+        modelo, condicao, descricao, foto_principal, pdf,
+        marca, ano, comprimento, casco, horas_motor,
+        cabines, combustivel, banheiros, fotos_galeria
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+    .run(
+      modelo || "",
+      condicao || "novo",
+      descricao || "",
+      foto_principal,
+      pdf,
+      marca || "",
+      ano || "",
+      comprimento || "",
+      casco || "",
+      horas_motor || "",
+      cabines || "",
+      combustivel || "",
+      banheiros || "",
+      JSON.stringify(fotos_galeria)
+    );
+
+  const novo = db.prepare("SELECT * FROM boats WHERE id = ?").get(resultado.lastInsertRowid);
+  res.json({ ...novo, fotos_galeria });
+});
 
 // Editar embarcação (protegido)
-app.put(
-  "/api/boats/:id",
-  apiAuth,
-  upload.fields([{ name: "foto", maxCount: 1 }, { name: "pdf", maxCount: 1 }]),
-  (req, res) => {
-    const atual = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
-    if (!atual) return res.status(404).json({ erro: "Embarcação não encontrada." });
+app.put("/api/boats/:id", apiAuth, uploadCampos, (req, res) => {
+  const atual = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
+  if (!atual) return res.status(404).json({ erro: "Embarcação não encontrada." });
 
-    const { modelo, ano, motorizacao, localizacao, condicao } = req.body;
-    const foto = req.files?.foto?.[0] ? "img/" + req.files.foto[0].filename : atual.foto;
-    const pdf = req.files?.pdf?.[0] ? "pdfs/" + req.files.pdf[0].filename : atual.pdf;
+  const {
+    modelo, condicao, descricao, tipo_apresentacao,
+    marca, ano, comprimento, casco, horas_motor,
+    cabines, combustivel, banheiros
+  } = req.body;
 
-    db.prepare(
-      `UPDATE boats SET modelo=?, ano=?, motorizacao=?, localizacao=?, foto=?, condicao=?, pdf=?
-       WHERE id=?`
-    ).run(modelo, ano, motorizacao, localizacao, foto, condicao, pdf, req.params.id);
+  const arqFoto = req.files?.foto_principal?.[0] || req.files?.foto?.[0];
+  const foto_principal = arqFoto ? "img/" + arqFoto.filename : (atual.foto_principal || atual.foto || "");
 
-    const atualizado = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
-    res.json(atualizado);
+  let pdf = atual.pdf;
+  if (tipo_apresentacao === "pdf") {
+    if (req.files?.pdf?.[0]) {
+      pdf = "pdfs/" + req.files.pdf[0].filename;
+    }
+  } else if (tipo_apresentacao === "detalhes") {
+    pdf = ""; // Limpa o PDF caso o usuário mude para a opção de galeria/ficha técnica
   }
-);
+
+  let galeria = [];
+  try {
+    galeria = atual.fotos_galeria ? JSON.parse(atual.fotos_galeria) : [];
+  } catch {
+    galeria = [];
+  }
+
+  if (req.files?.fotos_galeria) {
+    const novasFotos = req.files.fotos_galeria.map(f => "img/" + f.filename);
+    galeria = [...galeria, ...novasFotos];
+  }
+
+  db.prepare(
+    `UPDATE boats SET 
+      modelo=?, condicao=?, descricao=?, foto_principal=?, pdf=?,
+      marca=?, ano=?, comprimento=?, casco=?, horas_motor=?,
+      cabines=?, combustivel=?, banheiros=?, fotos_galeria=?
+     WHERE id=?`
+  ).run(
+    modelo ?? atual.modelo,
+    condicao ?? atual.condicao,
+    descricao ?? atual.descricao,
+    foto_principal,
+    pdf,
+    marca ?? atual.marca,
+    ano ?? atual.ano,
+    comprimento ?? atual.comprimento,
+    casco ?? atual.casco,
+    horas_motor ?? atual.horas_motor,
+    cabines ?? atual.cabines,
+    combustivel ?? atual.combustivel,
+    banheiros ?? atual.banheiros,
+    JSON.stringify(galeria),
+    req.params.id
+  );
+
+  const atualizado = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
+  res.json({ ...atualizado, fotos_galeria: galeria });
+});
 
 // Remover embarcação (protegido)
 app.delete("/api/boats/:id", apiAuth, (req, res) => {
@@ -246,7 +386,6 @@ app.delete("/api/boats/:id", apiAuth, (req, res) => {
 
 /* =========================================================================
    ARQUIVOS ESTÁTICOS DO SITE (vem por último)
-   (index.html na pasta public já é servido automaticamente em "/")
    ========================================================================= */
 app.use(express.static(path.join(__dirname, "public")));
 
