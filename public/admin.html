@@ -224,55 +224,55 @@
         <div class="campos-barco">
           
           <div class="campo full">
-            <label>Modelo / Nome da Embarcação</label>
-            <input type="text" name="modelo" required>
+            <label for="novo-modelo">Modelo / Nome da Embarcação</label>
+            <input type="text" id="novo-modelo" name="modelo" required>
           </div>
 
           <div class="campo">
-            <label>Condição</label>
-            <select name="condicao">
+            <label for="novo-condicao">Condição</label>
+            <select id="novo-condicao" name="condicao">
               <option value="novo">Novo</option>
               <option value="seminovo">Seminovo</option>
             </select>
           </div>
 
           <div class="campo full">
-            <label>Descrição Curta (Aparece no Card)</label>
-            <textarea name="descricao" rows="2" placeholder="Resumo exibido no card..."></textarea>
+            <label for="novo-descricao">Descrição Curta (Aparece no Card)</label>
+            <textarea id="novo-descricao" name="descricao" rows="2" placeholder="Resumo exibido no card..."></textarea>
           </div>
 
           <div class="campo full">
-            <label>Foto Principal (Capa do Card)</label>
-            <input type="file" name="foto_principal" accept="image/*">
+            <label for="novo-foto">Foto Principal (Capa do Card)</label>
+            <input type="file" id="novo-foto" name="foto_principal" accept="image/*">
             <div class="dica">Escolha a imagem de capa principal.</div>
           </div>
 
           <div class="campo full secao-tipo">
-            <label><strong>Tipo de Apresentação no "Conheça Mais"</strong></label>
-            <select name="tipo_apresentacao" onchange="alternarCamposNovo(this.value)">
+            <label for="novo-tipo"><strong>Tipo de Apresentação no "Conheça Mais"</strong></label>
+            <select id="novo-tipo" name="tipo_apresentacao" onchange="alternarCamposNovo(this.value)">
               <option value="pdf">Opção 1: Arquivo PDF</option>
               <option value="detalhes">Opção 2: Ficha Técnica + Galeria de Fotos</option>
             </select>
           </div>
 
           <div id="novo-bloco-pdf" class="campo full">
-            <label>PDF do catálogo</label>
-            <input type="file" name="pdf" accept="application/pdf">
+            <label for="novo-pdf">PDF do catálogo</label>
+            <input type="file" id="novo-pdf" name="pdf" accept="application/pdf">
           </div>
 
           <div id="novo-bloco-detalhes" class="campo full campos-barco" style="display:none; background:#fff; border:1px solid var(--border); padding:16px; border-radius:8px;">
-            <div class="campo"><label>Marca</label><input type="text" name="marca"></div>
-            <div class="campo"><label>Ano</label><input type="text" name="ano"></div>
-            <div class="campo"><label>Comprimento (pés)</label><input type="text" name="comprimento"></div>
-            <div class="campo"><label>Casco</label><input type="text" name="casco"></div>
-            <div class="campo"><label>Horas do Motor</label><input type="text" name="horas_motor"></div>
-            <div class="campo"><label>Cabines</label><input type="text" name="cabines"></div>
-            <div class="campo"><label>Combustível</label><input type="text" name="combustivel"></div>
-            <div class="campo"><label>Banheiros</label><input type="text" name="banheiros"></div>
+            <div class="campo"><label for="novo-marca">Marca</label><input type="text" id="novo-marca" name="marca"></div>
+            <div class="campo"><label for="novo-ano">Ano</label><input type="text" id="novo-ano" name="ano"></div>
+            <div class="campo"><label for="novo-comprimento">Comprimento (pés)</label><input type="text" id="novo-comprimento" name="comprimento"></div>
+            <div class="campo"><label for="novo-casco">Casco</label><input type="text" id="novo-casco" name="casco"></div>
+            <div class="campo"><label for="novo-horas">Horas do Motor</label><input type="text" id="novo-horas" name="horas_motor"></div>
+            <div class="campo"><label for="novo-cabines">Cabines</label><input type="text" id="novo-cabines" name="cabines"></div>
+            <div class="campo"><label for="novo-combustivel">Combustível</label><input type="text" id="novo-combustivel" name="combustivel"></div>
+            <div class="campo"><label for="novo-banheiros">Banheiros</label><input type="text" id="novo-banheiros" name="banheiros"></div>
 
             <div class="campo full">
-              <label>Fotos Adicionais (Galeria)</label>
-              <input type="file" name="fotos_galeria" accept="image/*" multiple>
+              <label for="novo-galeria">Fotos Adicionais (Galeria)</label>
+              <input type="file" id="novo-galeria" name="fotos_galeria" accept="image/*" multiple>
               <div class="dica">Selecione uma ou mais fotos para a galeria.</div>
             </div>
           </div>
@@ -289,9 +289,13 @@
 
   <script>
     async function verificarSessao() {
-      const r = await fetch('/api/sessao');
-      const d = await r.json();
-      if (!d.autenticado) window.location.href = '/login.html';
+      try {
+        const r = await fetch('/api/sessao');
+        const d = await r.json();
+        if (!d.autenticado) window.location.href = '/login.html';
+      } catch (err) {
+        window.location.href = '/login.html';
+      }
     }
     verificarSessao();
 
@@ -347,57 +351,57 @@
 
             <div class="campos-barco">
               <div class="campo full">
-                <label>Modelo / Nome</label>
-                <input type="text" name="modelo" value="${escapeAttr(b.modelo)}">
+                <label for="edit-modelo-${b.id}">Modelo / Nome</label>
+                <input type="text" id="edit-modelo-${b.id}" name="modelo" value="${escapeAttr(b.modelo)}">
               </div>
 
               <div class="campo">
-                <label>Condição</label>
-                <select name="condicao">
+                <label for="edit-condicao-${b.id}">Condição</label>
+                <select id="edit-condicao-${b.id}" name="condicao">
                   <option value="novo" ${b.condicao === 'novo' ? 'selected' : ''}>Novo</option>
                   <option value="seminovo" ${b.condicao === 'seminovo' ? 'selected' : ''}>Seminovo</option>
                 </select>
               </div>
 
               <div class="campo full">
-                <label>Descrição Curta (Card)</label>
-                <textarea name="descricao" rows="2">${escapeAttr(b.descricao)}</textarea>
+                <label for="edit-descricao-${b.id}">Descrição Curta (Card)</label>
+                <textarea id="edit-descricao-${b.id}" name="descricao" rows="2">${escapeAttr(b.descricao)}</textarea>
               </div>
 
               <div class="campo full">
-                <label>Foto Principal (Atual)</label>
+                <label for="edit-foto-${b.id}">Foto Principal (Atual)</label>
                 <img class="preview-foto" src="${b.foto_principal || b.foto || ''}" onerror="this.style.opacity=0.15" alt="">
-                <input type="file" name="foto_principal" accept="image/*">
+                <input type="file" id="edit-foto-${b.id}" name="foto_principal" accept="image/*">
                 <div class="dica">Escolha um arquivo se desejar trocar a foto principal.</div>
               </div>
 
               <div class="campo full secao-tipo">
-                <label><strong>Tipo de Apresentação</strong></label>
-                <select name="tipo_apresentacao" onchange="document.getElementById('edit-pdf-${b.id}').style.display = this.value === 'pdf' ? 'block' : 'none'; document.getElementById('edit-detalhes-${b.id}').style.display = this.value === 'detalhes' ? 'grid' : 'none';">
+                <label for="edit-tipo-${b.id}"><strong>Tipo de Apresentação</strong></label>
+                <select id="edit-tipo-${b.id}" name="tipo_apresentacao" onchange="document.getElementById('edit-pdf-${b.id}').style.display = this.value === 'pdf' ? 'block' : 'none'; document.getElementById('edit-detalhes-${b.id}').style.display = this.value === 'detalhes' ? 'grid' : 'none';">
                   <option value="pdf" ${temPdf ? 'selected' : ''}>Opção 1: Arquivo PDF</option>
                   <option value="detalhes" ${!temPdf ? 'selected' : ''}>Opção 2: Ficha Técnica + Galeria de Fotos</option>
                 </select>
               </div>
 
               <div id="edit-pdf-${b.id}" class="campo full" style="display: ${temPdf ? 'block' : 'none'};">
-                <label>PDF do Catálogo</label>
+                <label for="edit-pdffile-${b.id}">PDF do Catálogo</label>
                 <div class="dica">${b.pdf ? 'Atual: ' + b.pdf : 'Nenhum PDF cadastrado.'}</div>
-                <input type="file" name="pdf" accept="application/pdf">
+                <input type="file" id="edit-pdffile-${b.id}" name="pdf" accept="application/pdf">
               </div>
 
               <div id="edit-detalhes-${b.id}" class="campo full campos-barco" style="display: ${!temPdf ? 'grid' : 'none'}; background:#fff; border:1px solid var(--border); padding:16px; border-radius:8px;">
-                <div class="campo"><label>Marca</label><input type="text" name="marca" value="${escapeAttr(b.marca)}"></div>
-                <div class="campo"><label>Ano</label><input type="text" name="ano" value="${escapeAttr(b.ano)}"></div>
-                <div class="campo"><label>Comprimento (pés)</label><input type="text" name="comprimento" value="${escapeAttr(b.comprimento)}"></div>
-                <div class="campo"><label>Casco</label><input type="text" name="casco" value="${escapeAttr(b.casco)}"></div>
-                <div class="campo"><label>Horas de Motor</label><input type="text" name="horas_motor" value="${escapeAttr(b.horas_motor)}"></div>
-                <div class="campo"><label>Cabines</label><input type="text" name="cabines" value="${escapeAttr(b.cabines)}"></div>
-                <div class="campo"><label>Combustível</label><input type="text" name="combustivel" value="${escapeAttr(b.combustivel)}"></div>
-                <div class="campo"><label>Banheiros</label><input type="text" name="banheiros" value="${escapeAttr(b.banheiros)}"></div>
+                <div class="campo"><label for="edit-marca-${b.id}">Marca</label><input type="text" id="edit-marca-${b.id}" name="marca" value="${escapeAttr(b.marca)}"></div>
+                <div class="campo"><label for="edit-ano-${b.id}">Ano</label><input type="text" id="edit-ano-${b.id}" name="ano" value="${escapeAttr(b.ano)}"></div>
+                <div class="campo"><label for="edit-comprimento-${b.id}">Comprimento (pés)</label><input type="text" id="edit-comprimento-${b.id}" name="comprimento" value="${escapeAttr(b.comprimento)}"></div>
+                <div class="campo"><label for="edit-casco-${b.id}">Casco</label><input type="text" id="edit-casco-${b.id}" name="casco" value="${escapeAttr(b.casco)}"></div>
+                <div class="campo"><label for="edit-horas-${b.id}">Horas de Motor</label><input type="text" id="edit-horas-${b.id}" name="horas_motor" value="${escapeAttr(b.horas_motor)}"></div>
+                <div class="campo"><label for="edit-cabines-${b.id}">Cabines</label><input type="text" id="edit-cabines-${b.id}" name="cabines" value="${escapeAttr(b.cabines)}"></div>
+                <div class="campo"><label for="edit-combustivel-${b.id}">Combustível</label><input type="text" id="edit-combustivel-${b.id}" name="combustivel" value="${escapeAttr(b.combustivel)}"></div>
+                <div class="campo"><label for="edit-banheiros-${b.id}">Banheiros</label><input type="text" id="edit-banheiros-${b.id}" name="banheiros" value="${escapeAttr(b.banheiros)}"></div>
 
                 <div class="campo full">
-                  <label>Fotos Adicionais (Galeria)</label>
-                  <input type="file" name="fotos_galeria" accept="image/*" multiple>
+                  <label for="edit-galeria-${b.id}">Fotos Adicionais (Galeria)</label>
+                  <input type="file" id="edit-galeria-${b.id}" name="fotos_galeria" accept="image/*" multiple>
                   <div class="dica">Envie novas imagens se desejar atualizar a galeria.</div>
                 </div>
               </div>
@@ -425,17 +429,37 @@
         });
       });
 
-      // Clique remover
+      // Clique remover (ATUALIZADO)
       lista.querySelectorAll('button[data-remover]').forEach(btn => {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.remover;
-          if (!confirm('Remover esta embarcação definitivamente?')) return;
+          if (!id || id === 'undefined') {
+            mostrarStatus('Erro: Embarcação sem ID válido no banco.', 'erro');
+            return;
+          }
+
+          if (!confirm(`Remover a embarcação #${id} definitivamente?`)) return;
+
           try {
-            await fetch('/api/boats/' + id, { method: 'DELETE' });
-            mostrarStatus('Embarcação #' + id + ' removida.', 'ok');
+            const resp = await fetch('/api/boats/' + id, { 
+              method: 'DELETE',
+              headers: { 'Accept': 'application/json' }
+            });
+
+            if (resp.status === 401) {
+              mostrarStatus('Sua sessão expirou. Faça login novamente.', 'erro');
+              setTimeout(() => window.location.href = '/login.html', 1500);
+              return;
+            }
+
+            if (!resp.ok) {
+              throw new Error('Servidor retornou erro ' + resp.status);
+            }
+
+            mostrarStatus(`Embarcação #${id} removida com sucesso!`, 'ok');
             carregarBarcos();
           } catch (erro) {
-            mostrarStatus('Erro ao remover embarcação #' + id + '.', 'erro');
+            mostrarStatus('Erro ao remover embarcação: ' + erro.message, 'erro');
           }
         });
       });
