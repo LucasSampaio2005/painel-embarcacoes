@@ -10,12 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* =========================================================================
-   BANCO DE DADOS
-   (usa o módulo SQLite nativo do Node — sem instalar nada, sem compilar nada)
+   BANCO DE DADOS (SQLite nativo do Node)
    ========================================================================= */
 const db = new DatabaseSync(path.join(__dirname, "boats.db"));
 
-// Cria a tabela com todas as novas colunas
 db.prepare(`
 CREATE TABLE IF NOT EXISTS boats (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,7 +33,6 @@ CREATE TABLE IF NOT EXISTS boats (
   fotos_galeria TEXT
 )`).run();
 
-// Garante compatibilidade caso o banco já existisse sem as novas colunas
 const colunasExistentes = db.prepare("PRAGMA table_info(boats)").all().map(c => c.name);
 const novasColunas = [
   { nome: "descricao", tipo: "TEXT" },
@@ -55,12 +52,11 @@ novasColunas.forEach(col => {
     try {
       db.prepare(`ALTER TABLE boats ADD COLUMN ${col.nome} ${col.tipo}`).run();
     } catch (e) {
-      // Coluna já existente ou ignorada
+      // Ignora erro se coluna já existir
     }
   }
 });
 
-// Semeia o banco com os barcos do seed-boats.json na primeira execução
 const totalBarcos = db.prepare("SELECT COUNT(*) AS n FROM boats").get().n;
 if (totalBarcos === 0) {
   const seedPath = path.join(__dirname, "seed-boats.json");
@@ -101,22 +97,19 @@ if (totalBarcos === 0) {
 }
 
 /* =========================================================================
-   LOGIN (usuário/senha configuráveis por variável de ambiente)
+   LOGIN
    ========================================================================= */
 const ADMIN_USER = process.env.ADMIN_USER || "percio";
 const ADMIN_PASS = process.env.ADMIN_PASS || "schaefer2026";
 
 /* =========================================================================
-   UPLOAD DE ARQUIVOS (multer)
+   UPLOAD DE ARQUIVOS (MULTER - PERMITE MÚLTIPLAS FOTOS)
    ========================================================================= */
 const pastaImg = path.join(__dirname, "public", "img");
 const pastaPdf = path.join(__dirname, "public", "pdfs");
 fs.mkdirSync(pastaImg, { recursive: true });
 fs.mkdirSync(pastaPdf, { recursive: true });
 
-/* =========================================================================
-   REPARO DE PDFs COM CAMINHO ANTIGO
-   ========================================================================= */
 function repararPdfsAntigos() {
   let arquivosPdf;
   try {
@@ -160,12 +153,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Aceita Foto Principal, PDF e múltiplas Fotos da Galeria
+// Aceita Foto Principal, PDF e até 15 Fotos na Galeria
 const uploadCampos = upload.fields([
   { name: "foto_principal", maxCount: 1 },
-  { name: "foto", maxCount: 1 }, // suporte para legado
+  { name: "foto", maxCount: 1 },
   { name: "pdf", maxCount: 1 },
-  { name: "fotos_galeria", maxCount: 10 }
+  { name: "fotos_galeria", maxCount: 15 }
 ]);
 
 /* =========================================================================
@@ -186,7 +179,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: emProducao,
-      maxAge: 1000 * 60 * 60 * 8, // 8 horas
+      maxAge: 1000 * 60 * 60 * 8,
     },
   })
 );
@@ -227,7 +220,7 @@ app.get("/api/sessao", (req, res) => {
 });
 
 /* =========================================================================
-   PÁGINA ADMIN PROTEGIDA
+   PÁGINAS PROTEGIDAS
    ========================================================================= */
 app.get(["/admin", "/admin.html"], paginaAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
@@ -240,12 +233,9 @@ app.get("/login", (req, res) => {
 /* =========================================================================
    API DE EMBARCAÇÕES
    ========================================================================= */
-
-// Lista pública (usada pelo site: index.html e embarcoes.html)
 app.get("/api/boats", (req, res) => {
   const boats = db.prepare("SELECT * FROM boats ORDER BY id DESC").all();
   
-  // Converte a string de fotos_galeria de volta para Array JSON
   const formatados = boats.map(b => {
     let galeria = [];
     try {
@@ -263,7 +253,6 @@ app.get("/api/boats", (req, res) => {
   res.json(formatados);
 });
 
-// Criar embarcação (protegido)
 app.post("/api/boats", apiAuth, uploadCampos, (req, res) => {
   const {
     modelo, condicao, descricao, tipo_apresentacao,
@@ -274,12 +263,10 @@ app.post("/api/boats", apiAuth, uploadCampos, (req, res) => {
   const arqFoto = req.files?.foto_principal?.[0] || req.files?.foto?.[0];
   const foto_principal = arqFoto ? "img/" + arqFoto.filename : "";
 
-  // Se o usuário selecionou PDF como tipo de apresentação
   const pdf = tipo_apresentacao === "pdf" && req.files?.pdf?.[0]
     ? "pdfs/" + req.files.pdf[0].filename
     : (tipo_apresentacao === "pdf" ? req.body.pdf || "" : "");
 
-  // Múltiplas fotos para a galeria
   let fotos_galeria = [];
   if (req.files?.fotos_galeria) {
     fotos_galeria = req.files.fotos_galeria.map(f => "img/" + f.filename);
@@ -315,7 +302,6 @@ app.post("/api/boats", apiAuth, uploadCampos, (req, res) => {
   res.json({ ...novo, fotos_galeria });
 });
 
-// Editar embarcação (protegido)
 app.put("/api/boats/:id", apiAuth, uploadCampos, (req, res) => {
   const atual = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
   if (!atual) return res.status(404).json({ erro: "Embarcação não encontrada." });
@@ -335,7 +321,7 @@ app.put("/api/boats/:id", apiAuth, uploadCampos, (req, res) => {
       pdf = "pdfs/" + req.files.pdf[0].filename;
     }
   } else if (tipo_apresentacao === "detalhes") {
-    pdf = ""; // Limpa o PDF caso o usuário mude para a opção de galeria/ficha técnica
+    pdf = "";
   }
 
   let galeria = [];
@@ -345,6 +331,7 @@ app.put("/api/boats/:id", apiAuth, uploadCampos, (req, res) => {
     galeria = [];
   }
 
+  // Adiciona as novas fotos à lista existente
   if (req.files?.fotos_galeria) {
     const novasFotos = req.files.fotos_galeria.map(f => "img/" + f.filename);
     galeria = [...galeria, ...novasFotos];
@@ -378,15 +365,11 @@ app.put("/api/boats/:id", apiAuth, uploadCampos, (req, res) => {
   res.json({ ...atualizado, fotos_galeria: galeria });
 });
 
-// Remover embarcação (protegido)
 app.delete("/api/boats/:id", apiAuth, (req, res) => {
   db.prepare("DELETE FROM boats WHERE id = ?").run(req.params.id);
   res.json({ ok: true });
 });
 
-/* =========================================================================
-   ARQUIVOS ESTÁTICOS DO SITE (vem por último)
-   ========================================================================= */
 app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(PORT, "0.0.0.0", () => {
