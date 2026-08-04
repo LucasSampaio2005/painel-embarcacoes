@@ -273,7 +273,7 @@
             <div class="campo full">
               <label for="novo-galeria">Fotos Adicionais (Galeria)</label>
               <input type="file" id="novo-galeria" name="fotos_galeria" accept="image/*" multiple>
-              <div class="dica">Selecione uma ou mais fotos para a galeria.</div>
+              <div class="dica">Segure CTRL (ou CMD) para selecionar várias fotos de uma vez.</div>
             </div>
           </div>
 
@@ -402,7 +402,7 @@
                 <div class="campo full">
                   <label for="edit-galeria-${b.id}">Fotos Adicionais (Galeria)</label>
                   <input type="file" id="edit-galeria-${b.id}" name="fotos_galeria" accept="image/*" multiple>
-                  <div class="dica">Envie novas imagens se desejar atualizar a galeria.</div>
+                  <div class="dica">Envie novas fotos para adicionar à galeria. Segure CTRL (ou CMD) para escolher várias.</div>
                 </div>
               </div>
 
@@ -429,7 +429,7 @@
         });
       });
 
-      // Clique remover (ATUALIZADO)
+      // Clique remover
       lista.querySelectorAll('button[data-remover]').forEach(btn => {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.remover;
