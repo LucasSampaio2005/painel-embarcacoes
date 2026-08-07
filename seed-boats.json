@@ -1,11 +1,65 @@
 [
-  { "modelo": "V33 SPORT FISH", "ano": "0 km", "motorizacao": "2x Mercury 300HP V8 (popa)", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/v33.jpg", "condicao": "novo", "pdf": "v33.pdf" },
-  { "modelo": "SCHAEFER V34", "ano": "0 km", "motorizacao": "2x Mercury 300HP V8 (popa)", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/v34.png", "condicao": "novo", "pdf": "V34.pdf" },
-  { "modelo": "SCHAEFER V44", "ano": "0 km", "motorizacao": "Motor de popa (tri-motor)", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/v44.jpg", "condicao": "novo", "pdf": "v44.pdf" },
-  { "modelo": "SCHAEFER 380", "ano": "0 km", "motorizacao": "Motor de popa ou de centro", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/s380.jpg", "condicao": "novo", "pdf": "s380.pdf" },
-  { "modelo": "SCHAEFER 660", "ano": "0 km", "motorizacao": "Volvo Penta IPS 950 ou IPS 1050", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/s660.jpg", "condicao": "novo", "pdf": "Schaefer660.pdf" },
-  { "modelo": "SCHAEFER 510GT", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/510.png", "condicao": "novo", "pdf": "510GT.pdf" },
-  { "modelo": "SCHAEFER 26M", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/26M.png", "condicao": "novo", "pdf": "26M.pdf" },
-  { "modelo": "SCHAEFER 770", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/770.png", "condicao": "novo", "pdf": "Schaefer770.pdf" },
-  { "modelo": "SCHAEFER 450", "ano": "0 km", "motorizacao": "2x 435HP", "localizacao": "Fábrica Schaefer Yachts - Florianópolis/SC", "foto": "img/450.png", "condicao": "novo", "pdf": "450.pdf" }
+  {
+    "modelo": "V33 SPORT FISH",
+    "condicao": "novo",
+    "descricao": "Navegação esportiva com excelente espaço e desempenho superior.",
+    "foto_principal": "img/v33.jpg",
+    "pdf": "v33.pdf"
+  },
+  {
+    "modelo": "SCHAEFER V34",
+    "condicao": "novo",
+    "descricao": "Design moderno, alta tecnologia e motorização de alta performance.",
+    "foto_principal": "img/v34.png",
+    "pdf": "V34.pdf"
+  },
+  {
+    "modelo": "SCHAEFER V44",
+    "condicao": "novo",
+    "descricao": "Sofisticação e espaço amplo com a potência do tri-motor de popa.",
+    "foto_principal": "img/v44.jpg",
+    "pdf": "v44.pdf"
+  },
+  {
+    "modelo": "SCHAEFER 380",
+    "condicao": "novo",
+    "descricao": "Versatilidade e conforto com opção de motorização de popa ou centro.",
+    "foto_principal": "img/s380.jpg",
+    "pdf": "s380.pdf"
+  },
+  {
+    "modelo": "SCHAEFER 660",
+    "condicao": "novo",
+    "descricao": "Um marco de luxo, sofisticação e tecnologia em navegação.",
+    "foto_principal": "img/s660.jpg",
+    "pdf": "Schaefer660.pdf"
+  },
+  {
+    "modelo": "SCHAEFER 510GT",
+    "condicao": "novo",
+    "descricao": "Conforto incomparável e linhas elegantes para longas travessias.",
+    "foto_principal": "img/510.png",
+    "pdf": "510GT.pdf"
+  },
+  {
+    "modelo": "SCHAEFER 26M",
+    "condicao": "novo",
+    "descricao": "A síntese da excelência naval e acabamento de alto padrão.",
+    "foto_principal": "img/26M.png",
+    "pdf": "26M.pdf"
+  },
+  {
+    "modelo": "SCHAEFER 770",
+    "condicao": "novo",
+    "descricao": "Amplitude espetacular e luxo pensado em cada detalhe.",
+    "foto_principal": "img/770.png",
+    "pdf": "Schaefer770.pdf"
+  },
+  {
+    "modelo": "SCHAEFER 450",
+    "condicao": "novo",
+    "descricao": "Equilíbrio perfeito entre dimensões, conforto interno e navegação.",
+    "foto_principal": "img/450.png",
+    "pdf": "450.pdf"
+  }
 ]

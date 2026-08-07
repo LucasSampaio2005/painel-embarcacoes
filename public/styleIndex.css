@@ -587,6 +587,10 @@ footer {
         height: 600px;
     }
 
+    .onda {
+        top: 350px;
+    }
+
     .logo-texto {
         width: 85%;
         font-size: 17px;
