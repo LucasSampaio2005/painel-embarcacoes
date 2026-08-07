@@ -6,8 +6,8 @@
 <title>Embarcações</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styleEmbarcacao.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styleEmbarca.css">
 </head>
 <body>
 
@@ -123,9 +123,14 @@
             <p>${b.ano}</p>
             <p>${b.motorizacao}</p>
             <p>${b.localizacao}</p>
-            ${b.pdf ? `<a href="${b.pdf}" target="_blank" rel="noopener" class="btn-conheca">Conheça mais</a>` : ''}
+            <a href="embarcacao.html?id=${b.id}" class="btn-conheca">Conheça mais</a>
           </div>
         `;
+        // Clicar em qualquer parte do card leva pra página da embarcação
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-conheca')) return; // deixa o próprio link do botão navegar normalmente
+          window.location.href = `embarcacao.html?id=${b.id}`;
+        });
         list.appendChild(card);
       });
     }

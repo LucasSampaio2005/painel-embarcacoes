@@ -145,7 +145,8 @@
       margin-bottom: 5px;
     }
     .campo input,
-    .campo select {
+    .campo select,
+    .campo textarea {
       width: 100%;
       padding: 10px 12px;
       font-family: var(--font);
@@ -153,6 +154,11 @@
       border: 1px solid var(--border);
       border-radius: 6px;
       background: #fff;
+    }
+    .campo textarea {
+      resize: vertical;
+      min-height: 90px;
+      font-family: var(--font);
     }
     .campos-barco {
       display: grid;
@@ -170,6 +176,19 @@
       margin-top: 8px;
       background: #eee;
       display: block;
+    }
+    .galeria-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .galeria-preview img {
+      width: 70px;
+      height: 55px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--border);
     }
     .dica { font-size: 0.75rem; color: #888; margin-top: 4px; }
 
@@ -200,8 +219,10 @@
     <div class="aviso">
       <strong>Como funciona:</strong> edite os campos de uma embarcação e clique em <strong>"Salvar"</strong>
       naquela linha — a alteração já vai direto para o banco de dados e aparece no site na hora.
-      Para trocar a foto ou o PDF, escolha o novo arquivo antes de salvar. Para adicionar uma
-      embarcação nova, preencha o formulário no fim da página.
+      Para trocar a foto de capa ou o PDF, escolha o novo arquivo antes de salvar. Em
+      <strong>"Fotos da galeria"</strong> você pode selecionar várias imagens de uma vez — elas aparecem
+      no popup que abre ao clicar na embarcação no site; enviar fotos novas ali substitui a galeria
+      anterior. Para adicionar uma embarcação nova, preencha o formulário no fim da página.
     </div>
 
     <div id="status-msg" class="status-msg"></div>
@@ -240,9 +261,18 @@
             <input type="text" name="localizacao">
           </div>
           <div class="campo full">
-            <label>Foto</label>
+            <label>Descrição</label>
+            <textarea name="descricao" placeholder="Texto que aparece no popup da embarcação, junto com as fotos."></textarea>
+          </div>
+          <div class="campo full">
+            <label>Foto de capa</label>
             <input type="file" name="foto" accept="image/*">
-            <div class="dica">Escolha o arquivo de imagem direto do seu computador.</div>
+            <div class="dica">Essa é a foto que aparece no card da listagem.</div>
+          </div>
+          <div class="campo full">
+            <label>Fotos da galeria (várias, opcional)</label>
+            <input type="file" name="fotosExtra" accept="image/*" multiple>
+            <div class="dica">Selecione uma ou mais imagens — todas aparecem no popup ao clicar na embarcação.</div>
           </div>
           <div class="campo full">
             <label>PDF do catálogo (opcional)</label>
@@ -299,12 +329,29 @@
     function escapeAttr(valor) {
       return String(valor || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     }
+    function escapeHtml(valor) {
+      return String(valor || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function parseGaleria(valor) {
+      if (!valor) return [];
+      try {
+        const lista = JSON.parse(valor);
+        return Array.isArray(lista) ? lista : [];
+      } catch {
+        return [];
+      }
+    }
 
     function renderLista(boats) {
       const lista = document.getElementById('lista-barcos');
       lista.innerHTML = '';
 
       boats.forEach((b) => {
+        const galeria = parseGaleria(b.galeria);
         const row = document.createElement('div');
         row.className = 'boat-row';
         row.innerHTML = `
@@ -341,10 +388,20 @@
                 <input type="text" name="localizacao" value="${escapeAttr(b.localizacao)}">
               </div>
               <div class="campo full">
-                <label>Foto atual</label>
+                <label>Descrição</label>
+                <textarea name="descricao" placeholder="Texto que aparece no popup da embarcação, junto com as fotos.">${escapeHtml(b.descricao)}</textarea>
+              </div>
+              <div class="campo full">
+                <label>Foto de capa atual</label>
                 <img class="preview-foto" src="${b.foto || ''}" onerror="this.style.opacity=0.15" alt="">
                 <input type="file" name="foto" accept="image/*">
-                <div class="dica">Só escolha um arquivo aqui se quiser trocar a foto.</div>
+                <div class="dica">Só escolha um arquivo aqui se quiser trocar a foto de capa.</div>
+              </div>
+              <div class="campo full">
+                <label>Galeria de fotos atual (${galeria.length})</label>
+                ${galeria.length ? `<div class="galeria-preview">${galeria.map(g => `<img src="${g}" alt="">`).join('')}</div>` : '<div class="dica">Nenhuma foto extra cadastrada.</div>'}
+                <input type="file" name="fotosExtra" accept="image/*" multiple style="margin-top:8px;">
+                <div class="dica">Selecionar fotos aqui substitui toda a galeria atual. Deixe em branco pra manter como está.</div>
               </div>
               <div class="campo full">
                 <label>PDF do catálogo</label>

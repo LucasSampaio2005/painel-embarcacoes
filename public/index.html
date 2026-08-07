@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seu IATE</title>
+    <title>Meu IATE</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styleIndex.css">
+    <link rel="stylesheet" href="style1.css">
 </head>
 
 <body>
 
+    <!-- MENU OVERLAY -->
     <div id="menu-overlay" class="menu-overlay">
         <div class="menu-content">
             <div class="fechar" onclick="fecharMenu()">&#10005;</div>
@@ -21,13 +22,15 @@
         </div>
     </div>
 
-    <a href="https://wa.me/5548999950413" class="whatsapp" target="_blank" rel="noopener">
+    <!-- WHATSAPP FIXO -->
+    <a href="https://wa.me/5548999950413" class="whatsapp" target="_blank">
         <div class="icone">
             <img src="img/whatsapp.png" alt="WhatsApp">
         </div>
         <span>Como posso te ajudar?</span>
     </a>
 
+    <!-- BANNER -->
     <header class="banner">
 
         <div class="logo-area">
@@ -54,6 +57,7 @@
         <img src="img/onda.png" class="onda" alt="">
     </header>
 
+    <!-- EMBARCAÇÕES -->
     <section class="embarcacoes">
 
         <h2 class="titulo-embarcacoes">CONHEÇA NOSSAS EMBARCAÇÕES</h2>
@@ -64,7 +68,8 @@
 
             <div class="carrossel-container">
                 <div class="cards" id="cards-novos">
-                    </div>
+                    <!-- Gerado via JS a partir da API /api/boats (barcos com condicao "novo") -->
+                </div>
             </div>
 
             <button class="seta direita">&#10095;</button>
@@ -78,17 +83,17 @@
 
     </section>
 
+    <!-- PERCIO -->
     <section class="percio">
         <div class="percio-container">
 
             <div class="percio-img">
-                <img src="img/abc.png" alt="Pércio Beraldo">
+                <img src="img/percio.jpg" alt="Pércio Beraldo">
             </div>
 
             <div class="percio-texto">
                 <h2>
-                    ESPECIALISTA EM SCHAEFER YACHTS COM <span class="destaque">ATUAÇÃO DIRETA</span> NO ESTALEIRO EM
-                    FLORIANÓPOLIS.
+                    ESPECIALISTA EM SCHAEFER YACHTS COM <span class="destaque">ATUAÇÃO DIRETA</span> NO ESTALEIRO EM FLORIANÓPOLIS.
                 </h2>
 
                 <p>
@@ -105,6 +110,7 @@
         </div>
     </section>
 
+    <!-- EMBARCAÇÕES ENTREGUES -->
     <section class="entregues">
         <h2 class="titulo-entregues">EMBARCAÇÕES ENTREGUES</h2>
         <div class="linha-embarcacoes"></div>
@@ -120,19 +126,15 @@
                     </div>
 
                     <div class="card-entregue">
+                        <img src="img/entregue2.jpg" alt="Entrega de embarcação">
+                    </div>
+
+                    <div class="card-entregue">
+                        <img src="img/entregue3.jpg" alt="Entrega de embarcação">
+                    </div>
+
+                    <div class="card-entregue">
                         <img src="img/entregue4.jpg" alt="Entrega de embarcação">
-                    </div>
-
-                    <div class="card-entregue">
-                        <img src="img/entregue2.jpeg" alt="Entrega de embarcação">
-                    </div>
-
-                    <div class="card-entregue">
-                        <img src="img/entregue3.jpeg" alt="Entrega de embarcação">
-                    </div>
-
-                    <div class="card-entregue">
-                        <img src="img/entregue5.jpeg" alt="Entrega de embarcação">
                     </div>
 
                 </div>
@@ -142,32 +144,32 @@
         </div>
     </section>
 
+    <!-- RODAPÉ -->
     <footer>
         <img src="img/logo.png" class="logo-rodape">
-
-        <div class="footer-icones">
-            <a href="https://www.instagram.com/percio.schaeferyachts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-                target="_blank" rel="noopener" class="footer-icone-link">
-                <img src="img/insta.png" alt="Instagram">
-            </a>
-            <a href="https://wa.me/5548999950413" class="footer-icone-link" target="_blank" rel="noopener">
-                <img src="img/whats.png" alt="WhatsApp">
-            </a>
-        </div>
-
-        <div class="footer-separador"></div>
 
         <div class="footer-contato">
             <span class="footer-titulo">Contato</span>
             <span>(48) 999950413</span>
             <span>✉ percio.beraldo@schaeferyachts.com.br</span>
         </div>
+
+        <div class="footer-separador"></div>
+
+        <div class="footer-icones">
+            <a href="https://www.instagram.com/percio.schaeferyachts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" class="footer-icone-link">
+                <img src="img/insta.png" alt="Instagram">
+            </a>
+            <a href="#" class="footer-icone-link">
+                <img src="img/whats.png" alt="WhatsApp">
+            </a>
+        </div>
     </footer>
 
     <script src="menu.js"></script>
     <script>
         /* ── CARREGAMENTO DOS BARCOS "NOVOS" (via API) ── */
-        async function carregarBarcosNovos() {
+        async function carregarBarcosNovos(){
             const container = document.getElementById('cards-novos');
             try {
                 const resposta = await fetch('/api/boats', { cache: 'no-store' });
@@ -181,7 +183,7 @@
                             <h3>${b.modelo}</h3>
                             <p>${b.motorizacao}</p>
                             <p>${b.ano}</p>
-                            ${b.pdf ? `<a href="${b.pdf}" target="_blank" rel="noopener" class="btn-conheca">CONHEÇA</a>` : ''}
+                            <a href="embarcacao.html?id=${b.id}" class="btn-conheca">CONHEÇA</a>
                         </div>
                     </div>
                 `).join('');
@@ -192,11 +194,11 @@
         carregarBarcosNovos();
 
         /* ── CARROSSEL PRINCIPAL ── */
-        const cards = document.querySelector('.cards');
-        const btnEsquerda = document.querySelector('.esquerda');
-        const btnDireita = document.querySelector('.direita');
-        const container = document.querySelector('.carrossel-container');
-        let scrollPosition = 0;
+        const cards         = document.querySelector('.cards');
+        const btnEsquerda   = document.querySelector('.esquerda');
+        const btnDireita    = document.querySelector('.direita');
+        const container     = document.querySelector('.carrossel-container');
+        let scrollPosition  = 0;
 
         btnDireita.addEventListener('click', () => {
             const card = document.querySelector('.card');
@@ -216,11 +218,11 @@
         });
 
         /* ── CARROSSEL ENTREGUES ── */
-        const cardsE = document.querySelector('.cards-entregues');
-        const btnEsquerdaE = document.querySelector('.esquerda-e');
-        const btnDireitaE = document.querySelector('.direita-e');
-        const containerE = document.querySelector('.carrossel-entregues .carrossel-container');
-        let scrollPositionE = 0;
+        const cardsE            = document.querySelector('.cards-entregues');
+        const btnEsquerdaE      = document.querySelector('.esquerda-e');
+        const btnDireitaE       = document.querySelector('.direita-e');
+        const containerE        = document.querySelector('.carrossel-entregues .carrossel-container');
+        let scrollPositionE     = 0;
 
         btnDireitaE.addEventListener('click', () => {
             const cardWidth = document.querySelector('.card-entregue').offsetWidth + 30;
@@ -237,5 +239,4 @@
     </script>
 
 </body>
-
 </html>

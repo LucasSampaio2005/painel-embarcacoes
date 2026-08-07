@@ -27,6 +27,21 @@ CREATE TABLE IF NOT EXISTS boats (
   pdf TEXT
 )`).run();
 
+/* =========================================================================
+   MIGRAÇÃO — novas colunas (descrição e galeria de fotos extras)
+   Roda em todo início do servidor; só adiciona a coluna se ela ainda não
+   existir, então não apaga nem duplica nada em quem já tinha o banco antigo.
+   ========================================================================= */
+function migrarColuna(nome, tipoSql) {
+  const colunas = db.prepare("PRAGMA table_info(boats)").all();
+  if (!colunas.some((c) => c.name === nome)) {
+    db.exec(`ALTER TABLE boats ADD COLUMN ${nome} ${tipoSql}`);
+    console.log(`Coluna "${nome}" adicionada à tabela boats.`);
+  }
+}
+migrarColuna("descricao", "TEXT");
+migrarColuna("galeria", "TEXT"); // guarda um JSON com a lista de fotos extras, ex: ["img/a.jpg","img/b.jpg"]
+
 // Semeia o banco com os barcos que já existiam no boats.json, só na primeira vez
 const totalBarcos = db.prepare("SELECT COUNT(*) AS n FROM boats").get().n;
 if (totalBarcos === 0) {
@@ -112,6 +127,11 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage });
+const uploadCampos = upload.fields([
+  { name: "foto", maxCount: 1 },
+  { name: "pdf", maxCount: 1 },
+  { name: "fotosExtra", maxCount: 12 },
+]);
 
 /* =========================================================================
    MIDDLEWARES
@@ -193,22 +213,32 @@ app.get("/api/boats", (req, res) => {
   res.json(boats);
 });
 
-// Criar embarcação (protegido) — aceita upload de foto e pdf
+// Uma única embarcação (usada pela página de detalhe, embarcacao.html)
+app.get("/api/boats/:id", (req, res) => {
+  const boat = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
+  if (!boat) return res.status(404).json({ erro: "Embarcação não encontrada." });
+  res.json(boat);
+});
+
+// Criar embarcação (protegido) — aceita upload de foto, pdf e galeria de fotos extras
 app.post(
   "/api/boats",
   apiAuth,
-  upload.fields([{ name: "foto", maxCount: 1 }, { name: "pdf", maxCount: 1 }]),
+  uploadCampos,
   (req, res) => {
-    const { modelo, ano, motorizacao, localizacao, condicao } = req.body;
+    const { modelo, ano, motorizacao, localizacao, condicao, descricao } = req.body;
     const foto = req.files?.foto?.[0] ? "img/" + req.files.foto[0].filename : req.body.fotoUrl || "";
     const pdf = req.files?.pdf?.[0] ? "pdfs/" + req.files.pdf[0].filename : "";
+    const galeria = req.files?.fotosExtra?.length
+      ? JSON.stringify(req.files.fotosExtra.map((f) => "img/" + f.filename))
+      : "";
 
     const resultado = db
       .prepare(
-        `INSERT INTO boats (modelo, ano, motorizacao, localizacao, foto, condicao, pdf)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`
+        `INSERT INTO boats (modelo, ano, motorizacao, localizacao, foto, condicao, pdf, descricao, galeria)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
-      .run(modelo, ano, motorizacao, localizacao, foto, condicao, pdf);
+      .run(modelo, ano, motorizacao, localizacao, foto, condicao, pdf, descricao || "", galeria);
 
     const novo = db.prepare("SELECT * FROM boats WHERE id = ?").get(resultado.lastInsertRowid);
     res.json(novo);
@@ -219,19 +249,23 @@ app.post(
 app.put(
   "/api/boats/:id",
   apiAuth,
-  upload.fields([{ name: "foto", maxCount: 1 }, { name: "pdf", maxCount: 1 }]),
+  uploadCampos,
   (req, res) => {
     const atual = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
     if (!atual) return res.status(404).json({ erro: "Embarcação não encontrada." });
 
-    const { modelo, ano, motorizacao, localizacao, condicao } = req.body;
+    const { modelo, ano, motorizacao, localizacao, condicao, descricao } = req.body;
     const foto = req.files?.foto?.[0] ? "img/" + req.files.foto[0].filename : atual.foto;
     const pdf = req.files?.pdf?.[0] ? "pdfs/" + req.files.pdf[0].filename : atual.pdf;
+    // Enviar novas fotos extras substitui a galeria anterior; se não enviar nenhuma, mantém a atual
+    const galeria = req.files?.fotosExtra?.length
+      ? JSON.stringify(req.files.fotosExtra.map((f) => "img/" + f.filename))
+      : atual.galeria;
 
     db.prepare(
-      `UPDATE boats SET modelo=?, ano=?, motorizacao=?, localizacao=?, foto=?, condicao=?, pdf=?
+      `UPDATE boats SET modelo=?, ano=?, motorizacao=?, localizacao=?, foto=?, condicao=?, pdf=?, descricao=?, galeria=?
        WHERE id=?`
-    ).run(modelo, ano, motorizacao, localizacao, foto, condicao, pdf, req.params.id);
+    ).run(modelo, ano, motorizacao, localizacao, foto, condicao, pdf, descricao || "", galeria, req.params.id);
 
     const atualizado = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
     res.json(atualizado);

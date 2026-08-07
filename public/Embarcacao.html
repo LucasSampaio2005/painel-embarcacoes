@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embarcação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styleEmbarcacao.css">
+</head>
+<body>
+
+  <div id="menu-overlay" class="menu-overlay">
+    <div class="menu-content">
+      <div class="fechar" onclick="fecharMenu()">&#10005;</div>
+      <a href="index.html">INÍCIO</a>
+      <a href="percio.html">PÉRCIO BERALDO</a>
+      <a href="embarcoes.html">EMBARCAÇÕES</a>
+    </div>
+  </div>
+
+  <header>
+    <div class="logo-area">
+      <a href="index.html">
+        <img src="img/logo.png" class="logo" alt="Logo da empresa">
+      </a>
+    </div>
+    <div class="menu" onclick="abrirMenu()">MENU ☰</div>
+  </header>
+
+  <div class="detalhe-voltar-wrap">
+    <a href="embarcoes.html" class="detalhe-voltar">&#10094; Voltar para Embarcações</a>
+  </div>
+
+  <main id="detalhe-main">
+
+    <section class="detalhe-hero" id="detalhe-hero">
+      <img id="detalhe-foto-capa" src="" alt="">
+      <h1 id="detalhe-titulo"></h1>
+    </section>
+
+    <section class="detalhe-conteudo">
+
+      <div class="detalhe-coluna-principal">
+
+        <div id="detalhe-descricao-wrap">
+          <h2>Descrição</h2>
+          <p id="detalhe-descricao"></p>
+        </div>
+
+        <div id="detalhe-galeria-wrap" style="display:none;">
+          <h2>Fotos</h2>
+          <div class="detalhe-galeria-grade" id="detalhe-galeria-grade"></div>
+        </div>
+
+        <div id="detalhe-pdf-wrap" style="display:none;">
+          <h2>Catálogo</h2>
+          <a id="detalhe-pdf-link" class="btn-conheca" href="#" target="_blank" rel="noopener">Baixar / abrir PDF</a>
+        </div>
+
+      </div>
+
+      <aside class="detalhe-ficha">
+        <h2>Ficha Técnica</h2>
+        <table class="ficha-tabela">
+          <tbody>
+            <tr><th>Modelo</th><td id="ficha-modelo"></td></tr>
+            <tr><th>Ano</th><td id="ficha-ano"></td></tr>
+            <tr><th>Motorização</th><td id="ficha-motor"></td></tr>
+            <tr><th>Localização</th><td id="ficha-local"></td></tr>
+            <tr><th>Condição</th><td id="ficha-condicao"></td></tr>
+          </tbody>
+        </table>
+        <a href="https://wa.me/5548999950413" target="_blank" rel="noopener" class="botao-whatsapp-ficha">
+          Falar sobre esta embarcação
+        </a>
+      </aside>
+
+    </section>
+
+  </main>
+
+  <!-- LIGHTBOX — amplia a foto clicada na galeria -->
+  <div id="lightbox" class="boat-modal" aria-hidden="true">
+    <div class="boat-modal-fundo" data-fechar-lightbox></div>
+    <div class="boat-modal-caixa boat-modal-caixa-lightbox">
+      <button class="boat-modal-fechar" data-fechar-lightbox aria-label="Fechar">&#10005;</button>
+      <div class="boat-modal-galeria">
+        <img class="boat-modal-foto-principal" id="lightbox-foto" src="" alt="">
+        <button class="boat-modal-seta boat-modal-seta-esq" id="lightbox-seta-esq" aria-label="Foto anterior">&#10094;</button>
+        <button class="boat-modal-seta boat-modal-seta-dir" id="lightbox-seta-dir" aria-label="Próxima foto">&#10095;</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <img src="img/logo.png" class="logo-rodape">
+
+    <div class="footer-icones">
+      <a href="https://www.instagram.com/percio.schaeferyachts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" class="footer-icone-link">
+        <img src="img/insta.png" alt="Instagram">
+      </a>
+      <a href="https://wa.me/5548999950413" class="footer-icone-link">
+        <img src="img/whats.png" alt="WhatsApp">
+      </a>
+    </div>
+
+    <div class="footer-separador"></div>
+
+    <div class="footer-contato">
+      <span class="footer-titulo">Contato</span>
+      <span>(48) 999950413</span>
+      <span>✉ percio.beraldo@schaeferyachts.com.br</span>
+    </div>
+  </footer>
+
+  <script src="menu.js"></script>
+  <script>
+    function parseGaleria(valor){
+      if (!valor) return [];
+      try {
+        const lista = JSON.parse(valor);
+        return Array.isArray(lista) ? lista : [];
+      } catch {
+        return [];
+      }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    async function carregarEmbarcacao(){
+      if (!id) {
+        mostrarNaoEncontrada();
+        return;
+      }
+      try {
+        const resposta = await fetch('/api/boats/' + id, { cache: 'no-store' });
+        if (!resposta.ok) throw new Error('não encontrada');
+        const boat = await resposta.json();
+        preencherPagina(boat);
+      } catch (erro) {
+        mostrarNaoEncontrada();
+      }
+    }
+
+    function mostrarNaoEncontrada(){
+      document.getElementById('detalhe-main').innerHTML =
+        '<p class="detalhe-nao-encontrada">Embarcação não encontrada. <a href="embarcoes.html">Voltar para Embarcações</a></p>';
+    }
+
+    let lightboxFotos = [];
+    let lightboxIndice = 0;
+
+    function preencherPagina(boat){
+      document.title = (boat.modelo || 'Embarcação') + ' — Schaefer Yachts';
+
+      document.getElementById('detalhe-titulo').textContent = boat.modelo || '';
+      const fotoCapa = document.getElementById('detalhe-foto-capa');
+      if (boat.foto) {
+        fotoCapa.src = boat.foto;
+        fotoCapa.style.display = 'block';
+      } else {
+        fotoCapa.style.display = 'none';
+      }
+
+      document.getElementById('detalhe-descricao').textContent =
+        boat.descricao && boat.descricao.trim() ? boat.descricao : 'Descrição não cadastrada para esta embarcação.';
+
+      document.getElementById('ficha-modelo').textContent = boat.modelo || '—';
+      document.getElementById('ficha-ano').textContent = boat.ano || '—';
+      document.getElementById('ficha-motor').textContent = boat.motorizacao || '—';
+      document.getElementById('ficha-local').textContent = boat.localizacao || '—';
+      document.getElementById('ficha-condicao').textContent = boat.condicao === 'novo' ? 'Novo' : 'Seminovo';
+
+      // Galeria de fotos extras (sem repetir a foto de capa)
+      const extras = parseGaleria(boat.galeria).filter(f => f !== boat.foto);
+      if (extras.length) {
+        lightboxFotos = extras;
+        document.getElementById('detalhe-galeria-wrap').style.display = 'block';
+        const grade = document.getElementById('detalhe-galeria-grade');
+        grade.innerHTML = extras.map((f, i) => `<img src="${f}" data-indice="${i}" alt="">`).join('');
+        grade.querySelectorAll('img').forEach(img => {
+          img.addEventListener('click', () => abrirLightbox(Number(img.dataset.indice)));
+        });
+      }
+
+      // PDF do catálogo
+      if (boat.pdf) {
+        document.getElementById('detalhe-pdf-wrap').style.display = 'block';
+        document.getElementById('detalhe-pdf-link').href = boat.pdf;
+      }
+    }
+
+    /* ───────── LIGHTBOX (amplia fotos da galeria) ───────── */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxFoto = document.getElementById('lightbox-foto');
+    const lightboxSetaEsq = document.getElementById('lightbox-seta-esq');
+    const lightboxSetaDir = document.getElementById('lightbox-seta-dir');
+
+    function abrirLightbox(indice){
+      lightboxIndice = indice;
+      renderLightbox();
+      lightbox.classList.add('aberto');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-aberto');
+    }
+    function renderLightbox(){
+      lightboxFoto.src = lightboxFotos[lightboxIndice] || '';
+      const varias = lightboxFotos.length > 1;
+      lightboxSetaEsq.style.display = varias ? 'flex' : 'none';
+      lightboxSetaDir.style.display = varias ? 'flex' : 'none';
+    }
+    function fecharLightbox(){
+      lightbox.classList.remove('aberto');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-aberto');
+    }
+    document.querySelectorAll('[data-fechar-lightbox]').forEach(el => el.addEventListener('click', fecharLightbox));
+    lightboxSetaEsq.addEventListener('click', () => {
+      lightboxIndice = (lightboxIndice - 1 + lightboxFotos.length) % lightboxFotos.length;
+      renderLightbox();
+    });
+    lightboxSetaDir.addEventListener('click', () => {
+      lightboxIndice = (lightboxIndice + 1) % lightboxFotos.length;
+      renderLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('aberto')) return;
+      if (e.key === 'Escape') fecharLightbox();
+      if (e.key === 'ArrowLeft') lightboxSetaEsq.click();
+      if (e.key === 'ArrowRight') lightboxSetaDir.click();
+    });
+
+    carregarEmbarcacao();
+  </script>
+
+</body>
+</html>
