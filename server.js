@@ -54,7 +54,15 @@ if (totalBarcos === 0) {
     `);
     db.exec("BEGIN");
     seed.forEach((b) =>
-      inserir.run(b.modelo, b.ano, b.motorizacao, b.localizacao, b.foto, b.condicao, b.pdf)
+      inserir.run(
+        b.modelo ?? null,
+        b.ano ?? null,
+        b.motorizacao ?? null,
+        b.localizacao ?? null,
+        b.foto ?? null,
+        b.condicao ?? null,
+        b.pdf ?? null
+      )
     );
     db.exec("COMMIT");
     console.log(`Banco criado e populado com ${seed.length} embarcações do seed-boats.json`);
@@ -77,13 +85,6 @@ fs.mkdirSync(pastaPdf, { recursive: true });
 
 /* =========================================================================
    REPARO DE PDFs COM CAMINHO ANTIGO
-   Embarcações que vieram do antigo boats.json guardaram só o nome do
-   arquivo (ex: "v33.pdf"), de uma época em que o PDF ficava na raiz do
-   site. Hoje os PDFs enviados pelo painel ficam em public/pdfs com um
-   prefixo de data/hora (ex: "pdfs/1785201853224-v33.pdf"). Esta rotina
-   roda a cada início do servidor e conserta esses registros antigos,
-   casando o nome salvo com o arquivo real mais parecido na pasta pdfs.
-   Não faz nada com registros que já estão corretos ou vazios.
    ========================================================================= */
 function repararPdfsAntigos() {
   let arquivosPdf;
@@ -193,7 +194,6 @@ app.get("/api/sessao", (req, res) => {
 
 /* =========================================================================
    PÁGINA ADMIN PROTEGIDA
-   (precisa vir ANTES do express.static para o middleware de auth valer)
    ========================================================================= */
 app.get(["/admin", "/admin.html"], paginaAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
@@ -220,7 +220,7 @@ app.get("/api/boats/:id", (req, res) => {
   res.json(boat);
 });
 
-// Criar embarcação (protegido) — aceita upload de foto, pdf e galeria de fotos extras
+// Criar embarcação (protegido)
 app.post(
   "/api/boats",
   apiAuth,
@@ -238,7 +238,17 @@ app.post(
         `INSERT INTO boats (modelo, ano, motorizacao, localizacao, foto, condicao, pdf, descricao, galeria)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
-      .run(modelo, ano, motorizacao, localizacao, foto, condicao, pdf, descricao || "", galeria);
+      .run(
+        modelo ?? null,
+        ano ?? null,
+        motorizacao ?? null,
+        localizacao ?? null,
+        foto ?? null,
+        condicao ?? null,
+        pdf ?? null,
+        descricao ?? "",
+        galeria ?? ""
+      );
 
     const novo = db.prepare("SELECT * FROM boats WHERE id = ?").get(resultado.lastInsertRowid);
     res.json(novo);
@@ -257,7 +267,6 @@ app.put(
     const { modelo, ano, motorizacao, localizacao, condicao, descricao } = req.body;
     const foto = req.files?.foto?.[0] ? "img/" + req.files.foto[0].filename : atual.foto;
     const pdf = req.files?.pdf?.[0] ? "pdfs/" + req.files.pdf[0].filename : atual.pdf;
-    // Enviar novas fotos extras substitui a galeria anterior; se não enviar nenhuma, mantém a atual
     const galeria = req.files?.fotosExtra?.length
       ? JSON.stringify(req.files.fotosExtra.map((f) => "img/" + f.filename))
       : atual.galeria;
@@ -265,7 +274,18 @@ app.put(
     db.prepare(
       `UPDATE boats SET modelo=?, ano=?, motorizacao=?, localizacao=?, foto=?, condicao=?, pdf=?, descricao=?, galeria=?
        WHERE id=?`
-    ).run(modelo, ano, motorizacao, localizacao, foto, condicao, pdf, descricao || "", galeria, req.params.id);
+    ).run(
+      modelo ?? atual.modelo,
+      ano ?? atual.ano,
+      motorizacao ?? atual.motorizacao,
+      localizacao ?? atual.localizacao,
+      foto ?? atual.foto,
+      condicao ?? atual.condicao,
+      pdf ?? atual.pdf,
+      descricao ?? atual.descricao,
+      galeria ?? atual.galeria,
+      req.params.id
+    );
 
     const atualizado = db.prepare("SELECT * FROM boats WHERE id = ?").get(req.params.id);
     res.json(atualizado);
@@ -280,10 +300,9 @@ app.delete("/api/boats/:id", apiAuth, (req, res) => {
 
 /* =========================================================================
    ARQUIVOS ESTÁTICOS DO SITE (vem por último)
-   (index.html na pasta public já é servido automaticamente em "/")
    ========================================================================= */
 app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
