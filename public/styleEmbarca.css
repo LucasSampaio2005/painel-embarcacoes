@@ -619,6 +619,77 @@ body.modal-aberto{
     font-weight: 600;
 }
 
+/* =========================================================================
+   COMPARTILHAR PDF (botão + menu de redes sociais)
+   ========================================================================= */
+.detalhe-pdf-acoes{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.compartilhar-wrap{
+    position: relative;
+    display: inline-block;
+}
+.btn-compartilhar{
+    display: inline-block;
+    padding: 8px 20px;
+    background: none;
+    color: var(--navy);
+    border: 1px solid var(--navy);
+    border-radius: 4px;
+    font-family: var(--font-montserrat);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.btn-compartilhar:hover{
+    background: var(--navy);
+    color: #fff;
+}
+.menu-compartilhar{
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #fff;
+    border: 1px solid #d8dce1;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    min-width: 160px;
+    z-index: 20;
+}
+.menu-compartilhar a,
+.menu-compartilhar button{
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 9px 12px;
+    border: none;
+    background: none;
+    color: var(--navy);
+    font-family: var(--font-montserrat);
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.menu-compartilhar a:hover,
+.menu-compartilhar button:hover{
+    background: var(--gray-bg);
+}
+.compartilhar-status{
+    margin-top: 8px;
+    font-family: var(--font-montserrat);
+    font-size: 0.8rem;
+    color: #256b3b;
+}
+
 /* =========================================================
    RESPONSIVO
    ========================================================= */
@@ -782,6 +853,11 @@ body.modal-aberto{
     }
     .detalhe-voltar-wrap{
         padding: 14px 16px 0;
+    }
+
+    .detalhe-pdf-acoes{
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
 
