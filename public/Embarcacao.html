@@ -56,7 +56,19 @@
 
         <div id="detalhe-pdf-wrap" style="display:none;">
           <h2>Catálogo</h2>
-          <a id="detalhe-pdf-link" class="btn-conheca" href="#" target="_blank" rel="noopener">Baixar / abrir PDF</a>
+          <div class="detalhe-pdf-acoes">
+            <a id="detalhe-pdf-link" class="btn-conheca" href="#" target="_blank" rel="noopener">Baixar / abrir PDF</a>
+
+            <div class="compartilhar-wrap">
+              <button type="button" id="btn-compartilhar" class="btn-compartilhar">Compartilhar &#8599;</button>
+              <div id="menu-compartilhar" class="menu-compartilhar" hidden>
+                <a id="compartilhar-whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+                <a id="compartilhar-facebook" target="_blank" rel="noopener">Facebook</a>
+                <button type="button" id="compartilhar-copiar">Copiar link</button>
+              </div>
+            </div>
+          </div>
+          <p id="compartilhar-status" class="compartilhar-status" hidden>Link copiado!</p>
         </div>
 
       </div>
@@ -189,8 +201,66 @@
       // PDF do catálogo
       if (boat.pdf) {
         document.getElementById('detalhe-pdf-wrap').style.display = 'block';
-        document.getElementById('detalhe-pdf-link').href = boat.pdf;
+        const pdfUrlAbsoluta = new URL(boat.pdf, window.location.origin).href;
+        document.getElementById('detalhe-pdf-link').href = pdfUrlAbsoluta;
+        configurarCompartilhar(boat, pdfUrlAbsoluta);
       }
+    }
+
+    /* ───────── COMPARTILHAR PDF EM REDES SOCIAIS ───────── */
+    function configurarCompartilhar(boat, pdfUrlAbsoluta){
+      const btnCompartilhar = document.getElementById('btn-compartilhar');
+      const menu = document.getElementById('menu-compartilhar');
+      const status = document.getElementById('compartilhar-status');
+      const textoCompartilhar = `Confira o catálogo do ${boat.modelo || 'embarcação'}: `;
+
+      // Links de fallback (funcionam em qualquer navegador, sem depender de app instalado)
+      document.getElementById('compartilhar-whatsapp').href =
+        'https://wa.me/?text=' + encodeURIComponent(textoCompartilhar + pdfUrlAbsoluta);
+      document.getElementById('compartilhar-facebook').href =
+        'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pdfUrlAbsoluta);
+
+      btnCompartilhar.addEventListener('click', async () => {
+        // Se o navegador suporta o compartilhamento nativo (comum em celular),
+        // usa ele — abre o menu do próprio sistema com todos os apps instalados.
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: boat.modelo || 'Embarcação',
+              text: textoCompartilhar,
+              url: pdfUrlAbsoluta,
+            });
+            return;
+          } catch (erro) {
+            // Usuário cancelou o compartilhamento nativo — não faz nada
+            if (erro && erro.name === 'AbortError') return;
+          }
+        }
+        // Sem suporte nativo (a maioria dos navegadores de desktop): mostra o menu com os links
+        menu.hidden = !menu.hidden;
+      });
+
+      document.getElementById('compartilhar-copiar').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(pdfUrlAbsoluta);
+        } catch {
+          // navegadores muito antigos sem suporte à Clipboard API
+          const campo = document.createElement('textarea');
+          campo.value = pdfUrlAbsoluta;
+          document.body.appendChild(campo);
+          campo.select();
+          document.execCommand('copy');
+          document.body.removeChild(campo);
+        }
+        status.hidden = false;
+        setTimeout(() => { status.hidden = true; }, 2500);
+        menu.hidden = true;
+      });
+
+      // Fecha o menu se clicar fora dele
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.compartilhar-wrap')) menu.hidden = true;
+      });
     }
 
     /* ───────── LIGHTBOX (amplia fotos da galeria) ───────── */
