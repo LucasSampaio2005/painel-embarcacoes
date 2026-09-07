@@ -12,9 +12,6 @@ body {
     overflow-x: hidden;
 }
 
-/* =====================
-   BANNER
-===================== */
 .banner {
     height: 720px;
     background-image: url("img/iate.jpg");
@@ -208,7 +205,7 @@ body.menu-aberto .whatsapp {
 ===================== */
 .onda {
     position: absolute;
-    top: 560px;
+    top: 400px;
     left: 0;
     width: 100%;
     z-index: 2;
