@@ -663,7 +663,7 @@ footer {
 
     /* ONDA — acompanha a base do banner */
     .onda {
-        top: 300px;
+        top: 250px;
         bottom: -100px;
     }
 
@@ -827,7 +827,7 @@ footer {
     }
 
     .onda {
-        top: 250px;
+        top: 150px;
         bottom: -100px;
     }
 
