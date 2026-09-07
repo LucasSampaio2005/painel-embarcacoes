@@ -826,6 +826,11 @@ footer {
         height: 440px;
     }
 
+    .onda {
+        top: 300px;
+        bottom: -100px;
+    }
+
     .logo-titulo {
         font-size: 20px;
     }
